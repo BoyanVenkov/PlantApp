@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "PlantApp",
+    "slug": "plantapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "plantapp",
+    "splash": {
+      "backgroundColor": "#0f5132"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.plantapp.mobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "PlantApp needs your camera to take photos of your plants for identification.",
+        "NSPhotoLibraryUsageDescription": "PlantApp needs access to your photos so you can pick existing pictures of your plants."
+      }
+    },
+    "android": {
+      "package": "com.plantapp.mobile",
+      "permissions": [
+        "CAMERA",
+        "READ_MEDIA_IMAGES"
+      ],
+      "adaptiveIcon": {
+        "backgroundColor": "#0f5132"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "PlantApp needs access to your photos so you can pick existing pictures of your plants.",
+          "cameraPermission": "PlantApp needs your camera to take photos of your plants for identification."
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3940256099942544~3347511713",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511"
+        }
+      ],
+    ]
+  }
+}

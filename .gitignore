@@ -1,0 +1,17 @@
+node_modules/
+.expo/
+dist/
+web-build/
+*.log
+npm-debug.*
+.env
+.env.local
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.DS_Store
+ios/
+android/
+.metro-health-check*
+*.orig.*
