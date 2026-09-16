@@ -31,6 +31,7 @@
         "READ_MEDIA_IMAGES"
       ],
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0f5132"
       }
     },
