@@ -37,7 +37,7 @@ export default function Paywall() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 24 }}>
-        <Text className="text-3xl font-extrabold text-leaf-900 mb-1">PlantApp Pro</Text>
+        <Text className="text-3xl font-extrabold text-leaf-900 mb-1">Sproutly Pro</Text>
         <Text className="text-sm text-gray-500 mb-6">One small subscription, zero interruptions.</Text>
 
         <View className="gap-2 mb-8">

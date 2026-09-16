@@ -13,7 +13,7 @@ export default function RootLayout() {
     <>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerTitleStyle: { fontWeight: "700" }, headerTintColor: "#0f5132" }}>
-        <Stack.Screen name="index" options={{ title: "PlantApp" }} />
+        <Stack.Screen name="index" options={{ title: "Sproutly" }} />
         <Stack.Screen name="capture" options={{ title: "New scan" }} />
         <Stack.Screen name="analyzing" options={{ title: "Analyzing…", headerBackVisible: false, gestureEnabled: false }} />
         <Stack.Screen name="result/[id]" options={{ title: "Your plant" }} />

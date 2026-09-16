@@ -70,7 +70,7 @@ export default function Analyzing() {
         <Text className="text-2xl mb-3">🌿</Text>
         <Text className="text-lg font-bold text-leaf-900 text-center mb-2">Daily free limit reached</Text>
         <Text className="text-sm text-gray-500 text-center mb-6">
-          Upgrade to PlantApp Pro for unlimited scans and an ad-free experience.
+          Upgrade to Sproutly Pro for unlimited scans and an ad-free experience.
         </Text>
         <View className="w-full gap-3">
           <PrimaryButton label="✨ Upgrade to Pro" onPress={() => router.replace("/paywall")} />

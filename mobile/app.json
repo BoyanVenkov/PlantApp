@@ -1,24 +1,27 @@
 {
   "expo": {
-    "name": "PlantApp",
-    "slug": "plantapp",
+    "name": "Sproutly",
+    "slug": "sproutly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "plantapp",
+    "scheme": "sproutly",
     "splash": {
       "backgroundColor": "#0f5132"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
+    "web": {
+      "favicon": "./assets/favicon.svg"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.plantapp.mobile",
       "infoPlist": {
-        "NSCameraUsageDescription": "PlantApp needs your camera to take photos of your plants for identification.",
-        "NSPhotoLibraryUsageDescription": "PlantApp needs access to your photos so you can pick existing pictures of your plants."
+        "NSCameraUsageDescription": "Sproutly needs your camera to take photos of your plants for identification.",
+        "NSPhotoLibraryUsageDescription": "Sproutly needs access to your photos so you can pick existing pictures of your plants."
       }
     },
     "android": {
@@ -37,8 +40,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "PlantApp needs access to your photos so you can pick existing pictures of your plants.",
-          "cameraPermission": "PlantApp needs your camera to take photos of your plants for identification."
+          "photosPermission": "Sproutly needs access to your photos so you can pick existing pictures of your plants.",
+          "cameraPermission": "Sproutly needs your camera to take photos of your plants for identification."
         }
       ],
       [
@@ -47,7 +50,7 @@
           "androidAppId": "ca-app-pub-3940256099942544~3347511713",
           "iosAppId": "ca-app-pub-3940256099942544~1458002511"
         }
-      ],
+      ]
     ]
   }
 }

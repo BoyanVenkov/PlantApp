@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <SafeAreaView className="flex-1 bg-leaf-50" edges={["bottom"]}>
       <View className="flex-1 px-5 pt-6">
-        <Text className="text-3xl font-extrabold text-leaf-900">🌿 PlantApp</Text>
+        <Text className="text-3xl font-extrabold text-leaf-900">🌱 Sproutly</Text>
         <Text className="text-base text-leaf-700 mt-1 mb-6">
           Snap a photo — get an ID, a full care guide, a health check, and whether it's edible.
         </Text>
