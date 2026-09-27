@@ -45,7 +45,7 @@ export default function RootLayout() {
           headerShadowVisible: false,
         }}
       >
-        <Stack.Screen name="index" options={{ title: "Sproutly" }} />
+        <Stack.Screen name="index" options={{ title: "Leafkin" }} />
         <Stack.Screen name="capture" options={{ title: "New scan" }} />
         <Stack.Screen name="analyzing" options={{ title: "Analyzing…", headerBackVisible: false, gestureEnabled: false }} />
         <Stack.Screen name="result/[id]" options={{ title: "Your plant" }} />

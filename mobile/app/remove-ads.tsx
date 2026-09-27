@@ -12,7 +12,7 @@ const BENEFITS = [
   "🚫 No banners, anywhere in the app",
   `▶️ No videos — up to ${DAILY_SCAN_CAP} scans a day, straight to results`,
   "💚 One payment, yours forever — not a subscription",
-  "🌱 Helps keep Sproutly free for everyone else",
+  "🌱 Helps keep Leafkin free for everyone else",
 ];
 
 export default function RemoveAds() {
@@ -46,7 +46,7 @@ export default function RemoveAds() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 24 }}>
-        <Text className="text-3xl font-extrabold text-leaf-900 mb-1">Sproutly, ad-free</Text>
+        <Text className="text-3xl font-extrabold text-leaf-900 mb-1">Leafkin, ad-free</Text>
         <Text className="text-base text-gray-600 mb-6">Everything stays free. This just makes it quieter.</Text>
 
         <View className="gap-3 mb-8">

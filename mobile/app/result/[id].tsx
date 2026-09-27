@@ -35,7 +35,7 @@ export default function Result() {
       if (!remindersOn) {
         Alert.alert(
           "Added — reminders are off",
-          "Allow notifications for Sproutly in your phone settings to get watering reminders."
+          "Allow notifications for Leafkin in your phone settings to get watering reminders."
         );
       }
     };

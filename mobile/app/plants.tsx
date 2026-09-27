@@ -35,7 +35,7 @@ export default function MyPlants() {
           <Text className="text-5xl mb-4">🪴</Text>
           <Text className="text-xl font-bold text-leaf-900 text-center mb-2">No plants yet</Text>
           <Text className="text-base text-gray-600 text-center mb-6">
-            Scan a plant, then tap “Add to My Plants” — Sproutly will remind you when it needs water.
+            Scan a plant, then tap “Add to My Plants” — Leafkin will remind you when it needs water.
           </Text>
           <View className="w-full">
             <PrimaryButton label="📷 Scan a plant" onPress={() => router.push("/capture")} />

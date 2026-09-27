@@ -6,10 +6,16 @@
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="14" fill="url(#bg)"/>
-  <ellipse cx="22" cy="13" rx="22" ry="11" fill="#FFFFFF" opacity="0.14"/>
-  <g fill="#FFFFFF">
-    <rect x="29.5" y="34" width="5" height="18" rx="2.5"/>
-    <path d="M32 36 C38 34 46 30 47 19 C39 23 33 26 32 36 Z"/>
-    <path d="M32 36 C26 34 18 30 17 19 C25 23 31 26 32 36 Z"/>
+  <!-- Leafkin: a leaf with a face, tilted like it's saying hi -->
+  <g transform="translate(32 33)">
+    <g transform="rotate(32)">
+      <path d="M0 -25 C17 -13 17 12 0 22 C-17 12 -17 -13 0 -25 Z" fill="#FFFFFF"/>
+      <path d="M0 21 C0 25 -1 28 -3 30" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <circle cx="-4.6" cy="-1" r="2.1" fill="#16632C"/>
+    <circle cx="4.6" cy="-1" r="2.1" fill="#16632C"/>
+    <ellipse cx="-7.6" cy="3.6" rx="2.2" ry="1.4" fill="#8FE066" opacity="0.7"/>
+    <ellipse cx="7.6" cy="3.6" rx="2.2" ry="1.4" fill="#8FE066" opacity="0.7"/>
+    <path d="M-3.6 3.6 Q0 7.4 3.6 3.6" fill="none" stroke="#16632C" stroke-width="2" stroke-linecap="round"/>
   </g>
 </svg>

@@ -129,7 +129,7 @@ export default function PlantDetail() {
             <View className="flex-1">
               <Text className="text-base font-semibold text-leaf-900">Water every</Text>
               {suggested !== null && suggested !== plant.waterIntervalDays && (
-                <Text className="text-sm text-gray-500">Sproutly suggests {suggested} days</Text>
+                <Text className="text-sm text-gray-500">Leafkin suggests {suggested} days</Text>
               )}
             </View>
             <Stepper label={`${plant.waterIntervalDays} day${plant.waterIntervalDays === 1 ? "" : "s"}`} onMinus={() => changeInterval(-1)} onPlus={() => changeInterval(1)} />

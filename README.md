@@ -1,4 +1,6 @@
-# PlantApp
+# Leafkin
+
+*(repo: PlantApp — app ID `com.leafkin.app`)*
 
 Point your camera at a plant. Get back: what it is, how to care for it, whether it looks
 healthy right now, and whether you can eat it (and why you'd want to, or definitely shouldn't).
@@ -95,8 +97,8 @@ before it can ship, because I can't create these on your behalf:
    users, lets Google use submitted photos, and isn't allowed for apps serving the EEA/UK/CH.
 
 Then, before submitting to the stores:
-- Replace the placeholder icons/splash in `mobile/assets/` (currently 1x1 px placeholders —
-  they exist only so the dev server doesn't error on a missing file).
+- App icon, adaptive icon and favicon are generated from `mobile/assets/favicon.svg` (the
+  Leafkin leaf). The splash image is still a 1x1 px placeholder.
 - Write a real privacy policy (required by both stores, and by AdMob) covering: photos sent to
   Gemini for analysis, and anonymous device usage tracking for the free-scan cap. Link it from
   `app/settings.tsx`.

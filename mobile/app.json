@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Sproutly",
-    "slug": "sproutly",
+    "name": "Leafkin",
+    "slug": "leafkin",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "sproutly",
+    "scheme": "leafkin",
     "splash": {
       "backgroundColor": "#0f5132"
     },
@@ -18,21 +18,22 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.plantapp.mobile",
+      "bundleIdentifier": "com.leafkin.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "Sproutly needs your camera to take photos of your plants for identification.",
-        "NSPhotoLibraryUsageDescription": "Sproutly needs access to your photos so you can pick existing pictures of your plants."
+        "NSCameraUsageDescription": "Leafkin needs your camera to take photos of your plants for identification.",
+        "NSPhotoLibraryUsageDescription": "Leafkin needs access to your photos so you can pick existing pictures of your plants."
       }
     },
     "android": {
-      "package": "com.plantapp.mobile",
+      "package": "com.leafkin.app",
       "permissions": [
         "CAMERA",
         "READ_MEDIA_IMAGES"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#0f5132"
+        "backgroundImage": "./assets/adaptive-icon-background.png",
+        "backgroundColor": "#1E8E3E"
       }
     },
     "plugins": [
@@ -41,8 +42,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Sproutly needs access to your photos so you can pick existing pictures of your plants.",
-          "cameraPermission": "Sproutly needs your camera to take photos of your plants for identification."
+          "photosPermission": "Leafkin needs access to your photos so you can pick existing pictures of your plants.",
+          "cameraPermission": "Leafkin needs your camera to take photos of your plants for identification."
         }
       ],
       [
