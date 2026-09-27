@@ -4,6 +4,18 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      // Bumped up from Tailwind's defaults (xs 12, sm 14, base 16...) for
+      // readability on phones. Every screen uses these classes, so this is the
+      // single knob for app-wide type size.
+      fontSize: {
+        xs: ["14px", { lineHeight: "20px" }],
+        sm: ["16px", { lineHeight: "23px" }],
+        base: ["18px", { lineHeight: "26px" }],
+        lg: ["20px", { lineHeight: "28px" }],
+        xl: ["23px", { lineHeight: "31px" }],
+        "2xl": ["27px", { lineHeight: "34px" }],
+        "3xl": ["32px", { lineHeight: "38px" }],
+      },
       colors: {
         leaf: {
           50: "#f0f9f1",
