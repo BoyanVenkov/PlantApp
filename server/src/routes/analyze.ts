@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import { analyzePlantImages } from "../services/gemini.js";
-import { freeScanLimit } from "../middleware/freeScanLimit.js";
+import { dailyScanCap } from "../middleware/dailyScanCap.js";
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const bodySchema = z.object({
   images: z.array(z.string().min(100)).min(1).max(3),
 });
 
-router.post("/analyze", freeScanLimit, async (req, res) => {
+router.post("/analyze", dailyScanCap, async (req, res) => {
   const parsed = bodySchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid request.", details: parsed.error.flatten() });

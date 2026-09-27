@@ -1,0 +1,122 @@
+import { Platform } from "react-native";
+import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import type { GardenPlant } from "@/types/plant";
+import { listPlants } from "./storage";
+import { daysSinceWatered, nextWaterDate } from "./watering";
+
+const HOUR_KEY = "plantapp.reminder_hour";
+const DEFAULT_HOUR = 9;
+const CHANNEL_ID = "watering";
+
+export const REMINDER_HOURS = [7, 9, 12, 18, 20];
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+export async function setupReminderChannel() {
+  if (Platform.OS !== "android") return;
+  await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
+    name: "Watering reminders",
+    importance: Notifications.AndroidImportance.DEFAULT,
+  });
+}
+
+export async function getReminderHour(): Promise<number> {
+  const raw = await AsyncStorage.getItem(HOUR_KEY);
+  const hour = raw ? Number(raw) : DEFAULT_HOUR;
+  return Number.isInteger(hour) ? hour : DEFAULT_HOUR;
+}
+
+export async function setReminderHour(hour: number): Promise<void> {
+  await AsyncStorage.setItem(HOUR_KEY, String(hour));
+  await rescheduleAllReminders();
+}
+
+export async function hasReminderPermission(): Promise<boolean> {
+  const { granted } = await Notifications.getPermissionsAsync();
+  return granted;
+}
+
+/** Asks only if the OS still lets us; returns whether reminders can be shown. */
+export async function ensureReminderPermission(): Promise<boolean> {
+  const current = await Notifications.getPermissionsAsync();
+  if (current.granted) return true;
+  if (!current.canAskAgain) return false;
+  const { granted } = await Notifications.requestPermissionsAsync();
+  return granted;
+}
+
+function identifierFor(plantId: string) {
+  return `water-${plantId}`;
+}
+
+/**
+ * Fires on the due day at the user's reminder hour. If that moment has
+ * already passed (overdue, or due today but after the hour), it nudges at the
+ * next reminder hour instead — never in the middle of the night.
+ */
+function reminderDate(plant: GardenPlant, hour: number): Date {
+  const due = nextWaterDate(plant);
+  due.setHours(hour, 0, 0, 0);
+
+  const now = new Date();
+  if (due > now) return due;
+
+  const next = new Date(now);
+  next.setHours(hour, 0, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1);
+  return next;
+}
+
+async function scheduleOne(plant: GardenPlant, hour: number) {
+  const days = daysSinceWatered(plant);
+  await Notifications.scheduleNotificationAsync({
+    identifier: identifierFor(plant.id),
+    content: {
+      title: `💧 Time to water your ${plant.name}`,
+      body:
+        days > 0
+          ? `Last watered ${days} day${days === 1 ? "" : "s"} ago. Tap to mark it done.`
+          : "Tap to mark it done.",
+      data: { url: `/plant/${plant.id}` },
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: reminderDate(plant, hour),
+      channelId: CHANNEL_ID,
+    },
+  });
+}
+
+export async function scheduleReminder(plant: GardenPlant) {
+  if (!(await hasReminderPermission())) return;
+  await cancelReminder(plant.id);
+  await scheduleOne(plant, await getReminderHour());
+}
+
+export async function cancelReminder(plantId: string) {
+  await Notifications.cancelScheduledNotificationAsync(identifierFor(plantId)).catch(() => {});
+}
+
+/** Source of truth is the plants table; this rebuilds every reminder from it. */
+export async function rescheduleAllReminders() {
+  if (!(await hasReminderPermission())) return;
+  const [plants, hour] = await Promise.all([listPlants(), getReminderHour()]);
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  for (const plant of plants) {
+    await scheduleOne(plant, hour);
+  }
+}
+
+export function formatHour(hour: number): string {
+  const d = new Date();
+  d.setHours(hour, 0, 0, 0);
+  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}

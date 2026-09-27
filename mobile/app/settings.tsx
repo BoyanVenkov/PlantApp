@@ -1,48 +1,122 @@
-import { useEffect, useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { useCallback, useState } from "react";
+import { View, Text, ScrollView, Pressable, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import Constants from "expo-constants";
-import { isPro, restorePurchases, subscriptionsMockMode } from "@/services/subscriptions";
+import { restorePurchases, purchasesMockMode } from "@/services/subscriptions";
+import {
+  REMINDER_HOURS,
+  ensureReminderPermission,
+  formatHour,
+  getReminderHour,
+  hasReminderPermission,
+  rescheduleAllReminders,
+  setReminderHour,
+} from "@/services/reminders";
+import { DAILY_SCAN_CAP, FREE_SCANS_PER_DAY } from "@/services/usageLimiter";
+import { useAppStore } from "@/state/useAppStore";
 import { PrimaryButton } from "@/components/PrimaryButton";
 
 export default function Settings() {
   const router = useRouter();
-  const [pro, setPro] = useState(false);
+  const adFree = useAppStore((s) => s.adFree);
+  const setAdFree = useAppStore((s) => s.setAdFree);
+  const [hour, setHour] = useState<number | null>(null);
+  const [notifGranted, setNotifGranted] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    isPro().then(setPro);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getReminderHour().then(setHour);
+      hasReminderPermission().then(setNotifGranted);
+    }, [])
+  );
+
+  async function pickHour(h: number) {
+    setHour(h);
+    await setReminderHour(h);
+  }
+
+  async function enableReminders() {
+    const granted = await ensureReminderPermission();
+    setNotifGranted(granted);
+    if (granted) await rescheduleAllReminders();
+    else Linking.openSettings();
+  }
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView contentContainerStyle={{ padding: 24, gap: 24 }}>
-        <View>
-          <Text className="text-lg font-bold text-leaf-900 mb-2">Subscription</Text>
-          <Text className="text-sm text-gray-600 mb-3">
-            Status: {pro ? "Sproutly Pro ✅" : subscriptionsMockMode ? "Free (dev mode)" : "Free"}
+    <SafeAreaView className="flex-1 bg-leaf-50" edges={["bottom"]}>
+      <ScrollView contentContainerStyle={{ padding: 20, gap: 20 }}>
+        <Card title="💧 Watering reminders">
+          {notifGranted === false ? (
+            <>
+              <Text className="text-base text-gray-600 mb-3">
+                Notifications are off, so Sproutly can't remind you to water.
+              </Text>
+              <PrimaryButton label="Turn on reminders" onPress={enableReminders} />
+            </>
+          ) : (
+            <>
+              <Text className="text-base text-gray-600 mb-3">Remind me at:</Text>
+              <View className="flex-row flex-wrap gap-2">
+                {REMINDER_HOURS.map((h) => (
+                  <Pressable
+                    key={h}
+                    onPress={() => pickHour(h)}
+                    className={`rounded-full px-4 py-2 border ${
+                      hour === h ? "bg-leaf-600 border-leaf-600" : "bg-white border-leaf-200"
+                    }`}
+                  >
+                    <Text className={`text-base font-semibold ${hour === h ? "text-white" : "text-leaf-800"}`}>
+                      {formatHour(h)}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </>
+          )}
+        </Card>
+
+        <Card title="📷 Daily scans">
+          <Text className="text-base text-gray-600">
+            {adFree
+              ? `Up to ${DAILY_SCAN_CAP} scans a day, no videos.`
+              : `${FREE_SCANS_PER_DAY} free scans every day. After that, a short optional video unlocks each extra scan (up to ${DAILY_SCAN_CAP} a day).`}
           </Text>
-          {!pro && <PrimaryButton label="✨ Upgrade to Pro" onPress={() => router.push("/paywall")} />}
-          {!subscriptionsMockMode && (
+        </Card>
+
+        <Card title="✨ Ads">
+          <Text className="text-base text-gray-600 mb-3">
+            {adFree ? "Ad-free — thank you for supporting Sproutly! 💚" : "Sproutly is free, supported by a few small ads."}
+          </Text>
+          {!adFree && <PrimaryButton label="Remove ads" onPress={() => router.push("/remove-ads")} />}
+          {!purchasesMockMode && (
             <View className="mt-2">
               <PrimaryButton
-                label="Restore purchases"
+                label="Restore purchase"
                 variant="secondary"
-                onPress={() => restorePurchases().then(setPro)}
+                onPress={() => restorePurchases().then((ok) => ok && setAdFree(true))}
               />
             </View>
           )}
-        </View>
+        </Card>
 
-        <View>
-          <Text className="text-lg font-bold text-leaf-900 mb-2">About</Text>
-          <Text className="text-sm text-gray-600">Sproutly v{Constants.expoConfig?.version}</Text>
-          <Text className="text-xs text-gray-400 mt-2">
+        <Card title="About">
+          <Text className="text-base text-gray-600">Sproutly v{Constants.expoConfig?.version}</Text>
+          <Text className="text-sm text-gray-500 mt-2">
             Plant identification, care, health and edibility guidance is generated by AI and may occasionally be
             wrong. Never eat a wild plant based solely on this app — always confirm with a local expert first.
           </Text>
-        </View>
+        </Card>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function Card({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <View className="bg-white rounded-3xl p-5 border border-leaf-100">
+      <Text className="text-lg font-bold text-leaf-900 mb-2">{title}</Text>
+      {children}
+    </View>
   );
 }

@@ -1,35 +1,34 @@
-import { useEffect, useState } from "react";
-import { View, Text, Image, Alert, ScrollView } from "react-native";
+import { useCallback, useState } from "react";
+import { View, Text, Image, Alert, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { useAppStore } from "@/state/useAppStore";
-import { getRemainingFreeScans, freeScansPerDay } from "@/services/usageLimiter";
-import { isPro } from "@/services/subscriptions";
+import { DAILY_SCAN_CAP, getScanAllowance, type ScanAllowance } from "@/services/usageLimiter";
 
 const MAX_IMAGES = 3;
 
 export default function Capture() {
   const router = useRouter();
+  const adFree = useAppStore((s) => s.adFree);
+  const setPendingScan = useAppStore((s) => s.setPendingScan);
   const [images, setImages] = useState<string[]>([]);
-  const [remaining, setRemaining] = useState<number | null>(null);
-  const [pro, setPro] = useState(false);
-  const setPendingImageUris = useAppStore((s) => s.setPendingImageUris);
+  const [allowance, setAllowance] = useState<ScanAllowance | null>(null);
 
-  useEffect(() => {
-    Promise.all([getRemainingFreeScans(), isPro()]).then(([r, p]) => {
-      setRemaining(r);
-      setPro(p);
-    });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getScanAllowance(!!adFree).then(setAllowance);
+    }, [adFree])
+  );
 
-  const limitReached = !pro && remaining === 0;
+  const limitReached = allowance?.totalLeft === 0;
+  const needsAd = !!allowance?.nextNeedsAd;
 
   async function addFromCamera() {
     const perm = await ImagePicker.requestCameraPermissionsAsync();
     if (!perm.granted) return Alert.alert("Camera permission needed", "Enable camera access in Settings to take a photo.");
-    const result = await ImagePicker.launchCameraAsync({ quality: 0.7, allowsEditing: false });
+    const result = await ImagePicker.launchCameraAsync({ quality: 0.8, allowsEditing: false });
     if (!result.canceled) addImages(result.assets.map((a) => a.uri));
   }
 
@@ -37,10 +36,10 @@ export default function Capture() {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) return Alert.alert("Photos permission needed", "Enable photo library access in Settings.");
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.7,
+      mediaTypes: ["images"],
+      quality: 0.8,
       allowsMultipleSelection: true,
-      selectionLimit: MAX_IMAGES,
+      selectionLimit: MAX_IMAGES - images.length,
     });
     if (!result.canceled) addImages(result.assets.map((a) => a.uri));
   }
@@ -54,38 +53,29 @@ export default function Capture() {
   }
 
   function startAnalysis() {
-    setPendingImageUris(images);
+    setPendingScan(images, needsAd);
     router.push("/analyzing");
   }
+
+  const photoCount = images.length > 0 ? ` (${images.length} photo${images.length > 1 ? "s" : ""})` : "";
 
   return (
     <SafeAreaView className="flex-1 bg-white" edges={["bottom"]}>
       <ScrollView className="flex-1 px-5 pt-4" contentContainerStyle={{ paddingBottom: 24 }}>
-        <Text className="text-lg font-bold text-leaf-900 mb-1">Add up to {MAX_IMAGES} photos</Text>
-        <Text className="text-sm text-gray-500 mb-4">
-          A close-up of a leaf plus one wider shot helps a lot for identification and health checks.
+        <Text className="text-xl font-bold text-leaf-900 mb-1">Add up to {MAX_IMAGES} photos</Text>
+        <Text className="text-base text-gray-600 mb-4">
+          A close-up of a leaf plus one wider shot of the whole plant gives the best results.
         </Text>
 
-        {!pro && remaining !== null && (
-          <View className={`rounded-xl px-3 py-2 mb-4 ${limitReached ? "bg-red-50" : "bg-leaf-50"}`}>
-            <Text className={`text-xs font-semibold ${limitReached ? "text-red-700" : "text-leaf-700"}`}>
-              {limitReached
-                ? `You've used all ${freeScansPerDay} free scans today. Upgrade to Pro for unlimited scans.`
-                : `${remaining} of ${freeScansPerDay} free scans left today.`}
-            </Text>
-          </View>
-        )}
+        {allowance && <AllowanceNote allowance={allowance} adFree={!!adFree} />}
 
         <View className="flex-row flex-wrap gap-3 mb-4">
           {images.map((uri) => (
             <View key={uri}>
-              <Image source={{ uri }} className="w-24 h-24 rounded-xl bg-leaf-50" />
-              <Text
-                onPress={() => removeImage(uri)}
-                className="text-xs text-red-600 text-center mt-1 font-semibold"
-              >
-                Remove
-              </Text>
+              <Image source={{ uri }} className="w-28 h-28 rounded-xl bg-leaf-50" />
+              <Pressable onPress={() => removeImage(uri)} className="py-1" hitSlop={8}>
+                <Text className="text-sm text-red-600 text-center font-semibold">Remove</Text>
+              </Pressable>
             </View>
           ))}
         </View>
@@ -96,19 +86,37 @@ export default function Capture() {
             <PrimaryButton label="🖼️ Choose from library" onPress={addFromLibrary} variant="secondary" />
           </View>
         )}
-
-        {limitReached && (
-          <PrimaryButton label="✨ Upgrade to Pro" onPress={() => router.push("/paywall")} />
-        )}
       </ScrollView>
 
       <View className="px-5 pb-2">
         <PrimaryButton
-          label={`Analyze ${images.length > 0 ? `(${images.length} photo${images.length > 1 ? "s" : ""})` : ""}`}
+          label={needsAd ? `▶ Watch a short video & analyze${photoCount}` : `Analyze${photoCount}`}
           onPress={startAnalysis}
           disabled={images.length === 0 || limitReached}
         />
       </View>
     </SafeAreaView>
+  );
+}
+
+function AllowanceNote({ allowance, adFree }: { allowance: ScanAllowance; adFree: boolean }) {
+  let text: string;
+  let tone = "bg-leaf-50 text-leaf-800";
+
+  if (allowance.totalLeft === 0) {
+    text = `You've used all ${DAILY_SCAN_CAP} scans for today. Your plants and care guides are still here — new scans unlock tomorrow.`;
+    tone = "bg-amber-50 text-amber-900";
+  } else if (adFree || allowance.freeLeft > 0) {
+    text = `${allowance.freeLeft} free scan${allowance.freeLeft === 1 ? "" : "s"} left today.`;
+  } else {
+    text = `Today's free scans are used. A short video unlocks each extra scan — it plays while we analyze, so you don't wait longer. (${allowance.totalLeft} left today)`;
+    tone = "bg-sky-50 text-sky-900";
+  }
+
+  const [bg, fg] = tone.split(" ");
+  return (
+    <View className={`rounded-xl px-4 py-3 mb-4 ${bg}`}>
+      <Text className={`text-sm font-medium ${fg}`}>{text}</Text>
+    </View>
   );
 }

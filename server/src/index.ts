@@ -13,7 +13,7 @@ const origins = (process.env.CORS_ORIGINS || "*").split(",").map((o) => o.trim()
 app.use(cors({ origin: origins.includes("*") ? true : origins }));
 
 // Coarse network-level guard in front of the per-device daily cap in
-// freeScanLimit — stops a single client from hammering the endpoint.
+// dailyScanCap — stops a single client from hammering the endpoint.
 app.use(
   "/api/",
   rateLimit({

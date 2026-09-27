@@ -22,7 +22,8 @@ export interface PlantAnalysis {
 
   care: {
     light: { level: "low" | "medium" | "bright_indirect" | "full_sun"; description: string };
-    water: { frequencyDescription: string; description: string };
+    /** intervalDays: typical days between waterings — drives reminders in the app. */
+    water: { frequencyDescription: string; intervalDays: number; description: string };
     temperature: { minCelsius: number; maxCelsius: number; description: string };
     humidity: { level: "low" | "medium" | "high"; description: string };
     soil: string;

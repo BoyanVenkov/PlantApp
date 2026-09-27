@@ -1,9 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 
 /**
- * In-memory per-device daily cap on free scans. This exists because every scan
- * costs real money (Gemini call) while the app itself is ad-supported/free —
- * without a cap, a handful of heavy free users can blow past ad revenue.
+ * Hard per-device daily cap on scans — the one thing standing between a single
+ * heavy user (or a script) and an unbounded Gemini bill. It applies to
+ * everyone, including "Remove ads" buyers: a one-time purchase can't fund
+ * unlimited AI calls forever.
+ *
+ * How many of those scans are free vs. unlocked by a rewarded video is a
+ * client-side UX policy (mobile/src/services/usageLimiter.ts); the server only
+ * guarantees the ceiling. Before relying on rewarded ads for revenue at scale,
+ * add AdMob server-side verification (SSV) so unlocks can be checked here too.
  *
  * This is intentionally simple (good for a single-instance deploy / MVP).
  * Before scaling to multiple server instances, swap the Map for Redis
@@ -16,10 +22,10 @@ import type { NextFunction, Request, Response } from "express";
  * server-side instead of trusting a client header.
  */
 
-const FREE_SCANS_PER_DAY = Number(process.env.FREE_SCANS_PER_DAY || 5);
+const DAILY_SCAN_CAP = Number(process.env.DAILY_SCAN_CAP || 15);
 
 interface Bucket {
-  date: string; // yyyy-mm-dd, server-local
+  date: string; // yyyy-mm-dd, UTC
   count: number;
 }
 
@@ -29,33 +35,24 @@ function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-export function freeScanLimit(req: Request, res: Response, next: NextFunction) {
-  const isPro = req.header("x-pro-entitlement") === "true";
-  if (isPro) {
-    // NOTE: this header is client-asserted, i.e. trivially fakeable. It's fine
-    // as a soft gate for now (worst case a free user skips the cap), but
-    // before launch verify entitlement server-side via a RevenueCat webhook
-    // or their REST API instead of trusting the client.
-    return next();
-  }
-
+export function dailyScanCap(req: Request, res: Response, next: NextFunction) {
   const deviceId = req.header("x-device-id");
   if (!deviceId) {
     return res.status(400).json({ error: "Missing X-Device-Id header." });
   }
 
-  const bucket = usage.get(deviceId);
   const date = today();
+  const bucket = usage.get(deviceId);
 
   if (!bucket || bucket.date !== date) {
     usage.set(deviceId, { date, count: 1 });
     return next();
   }
 
-  if (bucket.count >= FREE_SCANS_PER_DAY) {
+  if (bucket.count >= DAILY_SCAN_CAP) {
     return res.status(429).json({
-      error: "Daily free scan limit reached.",
-      limit: FREE_SCANS_PER_DAY,
+      error: "Daily scan limit reached.",
+      limit: DAILY_SCAN_CAP,
     });
   }
 

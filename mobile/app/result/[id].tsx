@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
+import { useCallback, useState } from "react";
+import { View, Text, Image, ScrollView, ActivityIndicator, Alert, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { getScan } from "@/services/storage";
-import type { ScanRecord } from "@/types/plant";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { getPlantByScanId, getScan } from "@/services/storage";
+import { addScanToMyPlants, type LastWatered } from "@/services/garden";
+import { suggestedInterval } from "@/services/watering";
+import type { GardenPlant, ScanRecord } from "@/types/plant";
 import { SectionCard, Field } from "@/components/SectionCard";
 import { HealthBadge } from "@/components/HealthBadge";
 import { AdBanner } from "@/components/AdBanner";
@@ -13,10 +15,36 @@ export default function Result() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const [scan, setScan] = useState<ScanRecord | null | undefined>(undefined);
+  const [plant, setPlant] = useState<GardenPlant | null>(null);
+  const [adding, setAdding] = useState(false);
 
-  useEffect(() => {
-    getScan(id).then(setScan);
-  }, [id]);
+  useFocusEffect(
+    useCallback(() => {
+      getScan(id).then(setScan);
+      getPlantByScanId(id).then(setPlant);
+    }, [id])
+  );
+
+  function askLastWatered() {
+    const add = async (lastWatered: LastWatered) => {
+      if (!scan) return;
+      setAdding(true);
+      const { plant: added, remindersOn } = await addScanToMyPlants(scan, lastWatered);
+      setPlant(added);
+      setAdding(false);
+      if (!remindersOn) {
+        Alert.alert(
+          "Added — reminders are off",
+          "Allow notifications for Sproutly in your phone settings to get watering reminders."
+        );
+      }
+    };
+    Alert.alert("When did you last water it?", "So your first reminder lands on the right day.", [
+      { text: "Today", onPress: () => add("today") },
+      { text: "A few days ago", onPress: () => add("few_days_ago") },
+      { text: "It needs water now", onPress: () => add("needs_water") },
+    ]);
+  }
 
   if (scan === undefined) {
     return (
@@ -29,7 +57,7 @@ export default function Result() {
   if (scan === null) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-white px-8">
-        <Text className="text-base text-gray-500">Scan not found.</Text>
+        <Text className="text-lg text-gray-500">Scan not found.</Text>
       </SafeAreaView>
     );
   }
@@ -69,9 +97,31 @@ export default function Result() {
           </View>
         )}
 
-        <View className="mb-3">
+        <View className="mb-4">
           <HealthBadge status={health.status} />
         </View>
+
+        {plant ? (
+          <Pressable
+            onPress={() => router.push(`/plant/${plant.id}`)}
+            className="bg-leaf-100 rounded-2xl px-4 py-4 mb-4 flex-row items-center active:opacity-80"
+          >
+            <Text className="text-2xl mr-3">🪴</Text>
+            <View className="flex-1">
+              <Text className="text-base font-bold text-leaf-900">In My Plants</Text>
+              <Text className="text-sm text-leaf-700">Watering every {plant.waterIntervalDays} days · tap to manage</Text>
+            </View>
+            <Text className="text-xl text-leaf-700">›</Text>
+          </Pressable>
+        ) : (
+          <View className="mb-4">
+            <PrimaryButton
+              label={`🪴 Add to My Plants · water every ${suggestedInterval(care.water.intervalDays)} days`}
+              onPress={askLastWatered}
+              loading={adding}
+            />
+          </View>
+        )}
 
         <SectionCard icon="🔎" title="Identification">
           <Field label="Family" value={identification.family} />
@@ -85,7 +135,7 @@ export default function Result() {
         </SectionCard>
 
         <SectionCard icon="🩺" title="Health check">
-          <Text className="text-sm text-gray-700 mb-2">{health.summary}</Text>
+          <Text className="text-base text-gray-700 mb-2">{health.summary}</Text>
           {health.issuesDetected.length > 0 && (
             <Field label="Issues spotted" value={health.issuesDetected.join(" • ")} />
           )}

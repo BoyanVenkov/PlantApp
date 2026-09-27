@@ -1,7 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const KEY = "plantapp.scan_usage";
-const FREE_SCANS_PER_DAY = Number(process.env.EXPO_PUBLIC_FREE_SCANS_PER_DAY || 5);
+
+/** Scans per day with no ad at all. */
+export const FREE_SCANS_PER_DAY = Number(process.env.EXPO_PUBLIC_FREE_SCANS_PER_DAY || 3);
+/** Hard ceiling; scans between FREE and CAP each need a rewarded video. */
+export const DAILY_SCAN_CAP = Number(process.env.EXPO_PUBLIC_DAILY_SCAN_CAP || 15);
 
 interface Usage {
   date: string;
@@ -19,15 +23,27 @@ async function readUsage(): Promise<Usage> {
   return parsed.date === today() ? parsed : { date: today(), count: 0 };
 }
 
+export interface ScanAllowance {
+  used: number;
+  /** Scans left today that need no video. */
+  freeLeft: number;
+  /** Scans left today in total (free + video-unlocked). */
+  totalLeft: number;
+  /** True when the next scan needs a rewarded video. */
+  nextNeedsAd: boolean;
+}
+
 /**
- * Client-side mirror of the server's cap, purely so the UI can show
- * "2 of 5 free scans left today" and block the capture button proactively
- * instead of letting the user shoot a photo just to hit a 429. The server
- * (server/src/middleware/freeScanLimit.ts) is the real enforcement point.
+ * The monetization policy in one place. Ad-free buyers get the whole daily
+ * cap with no videos; everyone else gets FREE_SCANS_PER_DAY free, then one
+ * short opt-in video per extra scan. The server (dailyScanCap.ts) enforces the
+ * ceiling; this mirror only lets the UI explain it up front.
  */
-export async function getRemainingFreeScans(): Promise<number> {
-  const usage = await readUsage();
-  return Math.max(0, FREE_SCANS_PER_DAY - usage.count);
+export async function getScanAllowance(adFree: boolean): Promise<ScanAllowance> {
+  const { count } = await readUsage();
+  const totalLeft = Math.max(0, DAILY_SCAN_CAP - count);
+  const freeLeft = adFree ? totalLeft : Math.min(totalLeft, Math.max(0, FREE_SCANS_PER_DAY - count));
+  return { used: count, freeLeft, totalLeft, nextNeedsAd: totalLeft > 0 && freeLeft === 0 };
 }
 
 export async function recordScanUsed(): Promise<void> {
@@ -35,5 +51,3 @@ export async function recordScanUsed(): Promise<void> {
   usage.count += 1;
   await AsyncStorage.setItem(KEY, JSON.stringify(usage));
 }
-
-export const freeScansPerDay = FREE_SCANS_PER_DAY;

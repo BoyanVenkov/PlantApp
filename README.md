@@ -7,18 +7,22 @@ healthy right now, and whether you can eat it (and why you'd want to, or definit
 
 ```
 ┌─────────────────┐        photos (base64)        ┌──────────────────┐        ┌────────────┐
-│   Mobile app     │ ─────────────────────────────▶│   Node backend    │ ─────▶ │  Gemini    │
-│  (Expo / RN)     │◀───────────────────────────── │  (Express proxy)  │◀────── │  3.6 Flash │
+│   Mobile app     │ ─────────────────────────────▶│   Node backend    │ ─────▶ │  Gemini 3.5│
+│  (Expo / RN)     │◀───────────────────────────── │  (Express proxy)  │◀────── │ Flash-Lite │
 └─────────────────┘        structured JSON          └──────────────────┘        └────────────┘
         │
         ▼
-  SQLite (on-device history)
+  SQLite (on-device history + My Plants) → local watering reminders
 ```
 
 - **mobile/** — the Expo (React Native + TypeScript) app. Camera capture, results UI, local
-  scan history, ads, and the subscription paywall.
+  scan history, My Plants with watering reminders, ads, and the one-time "Remove ads" purchase.
 - **server/** — a small Express backend. This is where your Gemini API key lives. It's the
-  only thing allowed to call Gemini, and it enforces the free daily scan cap.
+  only thing allowed to call Gemini, and it enforces the daily scan cap.
+
+There are **no user accounts**. Everything personal (scans, plants, reminder times) lives on the
+phone; reminders are local notifications scheduled by the phone itself, so no push server is
+needed; the "Remove ads" purchase is tied to the user's App Store / Play account via RevenueCat.
 
 **Why a backend at all, instead of calling Gemini straight from the phone?** Any API key baked
 into a mobile app binary can be extracted and stolen — someone would run up your Gemini bill
@@ -29,11 +33,12 @@ on your key within hours of finding it. The backend is non-negotiable for a real
 | Decision | Choice | Why |
 |---|---|---|
 | App framework | Expo / React Native | One TypeScript codebase → iOS + Android. Mature libraries exist for every risky piece here (camera, AdMob, RevenueCat). |
-| AI model | **Gemini 3.6 Flash** | Native multimodal vision + enforced JSON-schema output in one call, cheap enough to sustain an ads-supported free tier, generous free quota to start. Swap to `gemini-3.6-pro` (one env var, `server/.env`) if you want higher accuracy on rare species at a higher cost. Verified working end-to-end against the live API while building this. |
-| Ads | Google AdMob | Banner on Home/Results, one interstitial every N scans (configurable, `EXPO_PUBLIC_INTERSTITIAL_EVERY_N_SCANS`), never shown to Pro users. |
-| Subscriptions | RevenueCat | Wraps Apple/Google billing so you don't hand-roll receipt validation. One entitlement (`pro`) = "ads off, unlimited scans." |
-| Local storage | SQLite (`expo-sqlite`) | Scan history survives app restarts and works fully offline, even though a new *scan* needs network. |
-| Cost protection | Server-side daily free-scan cap | Ads + an LLM call per scan means a single heavy free user can cost you more than they'll ever generate in ad revenue. The cap keeps that bounded. |
+| AI model | **Gemini 3.5 Flash-Lite** | Multimodal vision + enforced JSON-schema output in one call. With minimal thinking, medium media resolution, short answers and photos resized to 1024px on the phone, a scan measured **~0.22¢** against the live API. Swap to `gemini-3.6-flash` (one env var, `server/.env`) for more accuracy on tricky species at ~2-3x the cost. The server logs every scan's real token count and cost. |
+| Ads | Google AdMob | Gentle by design: banners on browse screens only (Home, My Plants, History, Result), **no interstitials**. The first `EXPO_PUBLIC_FREE_SCANS_PER_DAY` (3) scans each day are free; each extra scan is unlocked by an opt-in rewarded video that plays *while* Gemini works, so it adds no waiting. Policy lives in `mobile/src/services/usageLimiter.ts` and `ads.ts`. |
+| Purchases | RevenueCat | One non-consumable "Remove ads" product (entitlement `ad_free`): no banners, no videos. Still subject to the daily cap — a one-time payment can't fund unlimited AI calls. |
+| Watering reminders | `expo-notifications` (local) | Gemini returns `care.water.intervalDays`; "Add to My Plants" schedules a reminder at the user's chosen hour on the due day. Rebuilt from the plants table on every app launch. |
+| Local storage | SQLite (`expo-sqlite`) | Scan history and My Plants survive app restarts and work fully offline, even though a new *scan* needs network. Photos are resized and copied into the documents dir so the OS can't purge them. |
+| Cost protection | Server-side daily scan cap (15) | Applies to everyone. Bounds the worst-case Gemini bill per device. |
 
 ## Getting it running locally
 
@@ -63,10 +68,14 @@ npm run start
 Scan the QR code with Expo Go (iOS/Android) or press `i` / `a` for a simulator/emulator.
 
 The app runs fully out of the box with **no AdMob or RevenueCat accounts required**:
-- Ads default to Google's public test ad unit IDs, so banners/interstitials show real test
-  creatives without an AdMob account.
-- Subscriptions fall back to a "mock free mode" (`mobile/src/services/subscriptions.ts`) when
-  no RevenueCat key is set — the paywall screen still renders, purchases are just disabled.
+- Ads default to Google's public test ad unit IDs, so banners and rewarded videos show real
+  test creatives without an AdMob account.
+- Purchases fall back to a "mock" mode (`mobile/src/services/subscriptions.ts`) when no
+  RevenueCat key is set — the Remove ads screen still renders, purchasing is just disabled.
+
+The app uses native modules (AdMob, notifications, image manipulation), so it runs in a
+development build (`npx expo run:android` / `run:ios`), not Expo Go. Rebuild after adding any
+native dependency.
 
 ## Turning this into a real, published app
 
@@ -77,11 +86,13 @@ before it can ship, because I can't create these on your behalf:
    `EXPO_PUBLIC_ADMOB_*` values in `mobile/.env` and the `androidAppId`/`iosAppId` in
    `mobile/app.json`.
 2. **RevenueCat** (https://app.revenuecat.com) — connect it to App Store Connect + Google Play
-   Console, create a subscription product (e.g. "PlantApp Pro", monthly + annual), and an
-   entitlement called `pro`. Drop the RevenueCat keys into `mobile/.env`.
+   Console, create a one-time non-consumable product (e.g. "Remove ads", $2.99) and an
+   entitlement called `ad_free`. Drop the RevenueCat keys into `mobile/.env`.
 3. **Deploy the server somewhere** (Render, Fly.io, Railway, a small VPS — anything that runs
    Node). Point `EXPO_PUBLIC_API_BASE_URL` at it. Put `GEMINI_API_KEY` in that host's secret
    env vars, never in the mobile build.
+4. **Turn on Gemini billing** before launch. The free tier's daily quota is shared by all your
+   users, lets Google use submitted photos, and isn't allowed for apps serving the EEA/UK/CH.
 
 Then, before submitting to the stores:
 - Replace the placeholder icons/splash in `mobile/assets/` (currently 1x1 px placeholders —
@@ -89,11 +100,9 @@ Then, before submitting to the stores:
 - Write a real privacy policy (required by both stores, and by AdMob) covering: photos sent to
   Gemini for analysis, and anonymous device usage tracking for the free-scan cap. Link it from
   `app/settings.tsx`.
-- Harden `X-Pro-Entitlement` (see `server/src/middleware/freeScanLimit.ts`) — right now the
-  server trusts a client-sent header for the Pro bypass, which is fine for development but
-  spoofable. Before launch, verify entitlement server-side via a RevenueCat webhook or their
-  REST API instead.
-- Swap the in-memory rate-limit `Map` in `freeScanLimit.ts` for Redis (or similar) once you're
+- Rewarded-video unlocks are enforced on the phone only; the server just guarantees the daily
+  cap. If people start bypassing videos at scale, add AdMob server-side verification (SSV).
+- Swap the in-memory rate-limit `Map` in `dailyScanCap.ts` for Redis (or similar) once you're
   running more than one server instance.
 - Run `npx expo install --fix` after any dependency changes to keep native module versions
   aligned with your Expo SDK.
@@ -116,22 +125,25 @@ PlantApp/
 │   │   ├── index.ts               App entry, CORS, rate limiting
 │   │   ├── routes/analyze.ts      POST /api/analyze
 │   │   ├── services/gemini.ts     Prompt + JSON schema + Gemini call
-│   │   ├── middleware/freeScanLimit.ts
+│   │   ├── middleware/dailyScanCap.ts
 │   │   └── types.ts               PlantAnalysis shape (keep in sync with mobile)
 │   └── .env.example
 └── mobile/                        Expo app
     ├── app/                       Screens (expo-router, file-based)
     │   ├── index.tsx              Home
     │   ├── capture.tsx            Photo picker (camera/library, up to 3 photos)
-    │   ├── analyzing.tsx          Loading state, calls the backend
-    │   ├── result/[id].tsx        Identification / Care / Health / Edibility
+    │   ├── analyzing.tsx          Resizes photos, calls the backend, plays rewarded video
+    │   ├── result/[id].tsx        Identification / Care / Health / Edibility, Add to My Plants
+    │   ├── plants.tsx             My Plants (thirstiest first)
+    │   ├── plant/[id].tsx         One plant: watered button, interval, rename
     │   ├── history.tsx
-    │   ├── paywall.tsx
-    │   └── settings.tsx
+    │   ├── remove-ads.tsx
+    │   └── settings.tsx           Reminder time, scans, ads
     ├── src/
-    │   ├── components/            AdBanner, HealthBadge, SectionCard, PrimaryButton
-    │   ├── services/              api, storage (SQLite), ads, subscriptions, usageLimiter
-    │   ├── state/useAppStore.ts   In-flight capture state (zustand)
+    │   ├── components/            AdBanner, HealthBadge, WaterStatusPill, SectionCard, PrimaryButton
+    │   ├── services/              api, storage (SQLite), images, ads, subscriptions, usageLimiter,
+    │   │                          garden, watering, reminders
+    │   ├── state/useAppStore.ts   In-flight scan + ad-free state (zustand)
     │   └── types/plant.ts         PlantAnalysis shape (keep in sync with server)
     └── .env.example
 ```

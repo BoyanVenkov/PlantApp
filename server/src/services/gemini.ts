@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI, MediaResolution, ThinkingLevel, Type } from "@google/genai";
 import type { PlantAnalysis } from "../types.js";
 
 const apiKey = process.env.GEMINI_API_KEY;
@@ -7,7 +7,12 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenAI({ apiKey });
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+
+// USD per 1M tokens, used only for the per-scan cost log line. Defaults match
+// gemini-3.5-flash-lite; update them if you switch GEMINI_MODEL.
+const PRICE_INPUT_PER_M = Number(process.env.GEMINI_PRICE_INPUT_PER_M || 0.3);
+const PRICE_OUTPUT_PER_M = Number(process.env.GEMINI_PRICE_OUTPUT_PER_M || 2.5);
 
 // Mirrors PlantAnalysis in ../types.ts. Gemini enforces this shape server-side
 // so the mobile app never has to defensively parse free-form text.
@@ -53,9 +58,10 @@ const responseSchema = {
           type: Type.OBJECT,
           properties: {
             frequencyDescription: { type: Type.STRING },
+            intervalDays: { type: Type.INTEGER },
             description: { type: Type.STRING },
           },
-          required: ["frequencyDescription", "description"],
+          required: ["frequencyDescription", "intervalDays", "description"],
         },
         temperature: {
           type: Type.OBJECT,
@@ -148,7 +154,12 @@ Rules:
      unfamiliar plant, and to never eat anything based on a single photo-based app identification.
    - benefits should describe genuine nutritional/traditional/medicinal uses when isEdible is true,
      but must not overstate medical claims.
-6. Never break character, never mention that you are an AI model, and never include markdown or
+6. Keep it short: every description/text field is 1-2 plain sentences, every list has at most 4
+   items, and alternativeMatches has at most 3 entries. Users read this on a phone.
+7. care.water.intervalDays is the typical number of days between waterings for this plant in an
+   average home (or garden, if clearly outdoors) during the growing season. It drives watering
+   reminders, so give a single realistic integer (e.g. 7), never 0.
+8. Never break character, never mention that you are an AI model, and never include markdown or
    commentary outside the JSON.`;
 
 function toInlineImage(base64: string) {
@@ -177,8 +188,16 @@ export async function analyzePlantImages(images: string[]): Promise<PlantAnalysi
       responseMimeType: "application/json",
       responseSchema,
       temperature: 0.3,
+      // The biggest cost lever: thinking tokens are billed as output. Structured
+      // extraction like this doesn't benefit much from long reasoning.
+      thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
+      // Photos are already resized to ~1024px on the phone; medium resolution
+      // keeps leaf detail while capping each image at a few hundred tokens.
+      mediaResolution: MediaResolution.MEDIA_RESOLUTION_MEDIUM,
     },
   });
+
+  logUsage(response.usageMetadata, images.length);
 
   const text = response.text;
   if (!text) {
@@ -186,4 +205,18 @@ export async function analyzePlantImages(images: string[]): Promise<PlantAnalysi
   }
 
   return JSON.parse(text) as PlantAnalysis;
+}
+
+function logUsage(
+  usage: { promptTokenCount?: number; candidatesTokenCount?: number; thoughtsTokenCount?: number } | undefined,
+  imageCount: number
+) {
+  if (!usage) return;
+  const input = usage.promptTokenCount ?? 0;
+  const output = (usage.candidatesTokenCount ?? 0) + (usage.thoughtsTokenCount ?? 0);
+  const costUsd = (input * PRICE_INPUT_PER_M + output * PRICE_OUTPUT_PER_M) / 1_000_000;
+  console.log(
+    `[gemini] ${MODEL} | ${imageCount} img | in ${input} tok | out ${usage.candidatesTokenCount ?? 0} tok` +
+      ` + thinking ${usage.thoughtsTokenCount ?? 0} tok | ~$${costUsd.toFixed(5)} (${(costUsd * 100).toFixed(2)}¢)`
+  );
 }
