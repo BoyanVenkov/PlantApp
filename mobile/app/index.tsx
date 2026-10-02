@@ -11,20 +11,18 @@ import { listPlants, listScans } from "@/services/storage";
 import { markWatered } from "@/services/garden";
 import { daysUntilWater, needsWaterToday } from "@/services/watering";
 import { getScanAllowance, type ScanAllowance } from "@/services/usageLimiter";
-import { useAppStore } from "@/state/useAppStore";
 import type { GardenPlant, ScanRecord } from "@/types/plant";
 
-function allowanceLine(t: TFunction, a: ScanAllowance | null, adFree: boolean | null): string {
+function allowanceLine(t: TFunction, a: ScanAllowance | null): string {
   if (!a) return " ";
   if (a.totalLeft === 0) return t("home.limitReached");
-  if (adFree || a.freeLeft > 0) return t("common.freeScansLeft", { count: a.freeLeft });
+  if (a.freeLeft > 0) return t("common.freeScansLeft", { count: a.freeLeft });
   return t("home.freeUsed");
 }
 
 export default function Home() {
   const router = useRouter();
   const { t } = useTranslation();
-  const adFree = useAppStore((s) => s.adFree);
   const [recent, setRecent] = useState<ScanRecord[]>([]);
   const [plants, setPlants] = useState<GardenPlant[]>([]);
   const [allowance, setAllowance] = useState<ScanAllowance | null>(null);
@@ -32,8 +30,8 @@ export default function Home() {
   const reload = useCallback(() => {
     listScans().then((all) => setRecent(all.filter((s) => s.analysis.isPlant).slice(0, 6)));
     listPlants().then(setPlants);
-    getScanAllowance(!!adFree).then(setAllowance);
-  }, [adFree]);
+    getScanAllowance().then(setAllowance);
+  }, []);
 
   useFocusEffect(reload);
 
@@ -60,7 +58,7 @@ export default function Home() {
           >
             <Text className="text-lg font-bold text-leaf-900">{t("common.scanPlant")}</Text>
           </Pressable>
-          <Text className="text-sm text-leaf-300 text-center mt-3">{allowanceLine(t, allowance, adFree)}</Text>
+          <Text className="text-sm text-leaf-300 text-center mt-3">{allowanceLine(t, allowance)}</Text>
         </View>
 
         {/* Needs water today */}

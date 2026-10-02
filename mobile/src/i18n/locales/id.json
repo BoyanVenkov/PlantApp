@@ -6,10 +6,9 @@
     "watered": "Sudah disiram",
     "backHome": "Kembali ke beranda",
     "scanPlant": "📷 Pindai tanaman",
-    "removeAds": "Hapus iklan",
-    "restorePurchase": "Pulihkan pembelian",
     "days_other": "{{count}} hari",
-    "freeScansLeft_other": "Sisa {{count}} pindaian gratis hari ini"
+    "freeScansLeft_other": "Sisa {{count}} pindaian gratis hari ini",
+    "ad": "Iklan"
   },
   "nav": {
     "newScan": "Pindaian baru",
@@ -174,23 +173,12 @@
     "turnOn": "Aktifkan pengingat",
     "remindAt": "Ingatkan saya pukul:",
     "scansTitle": "📷 Pindaian harian",
-    "scansAdFree": "Hingga {{cap}} pindaian sehari, tanpa video.",
     "scansFree": "{{free}} pindaian gratis setiap hari. Setelah itu, video singkat opsional membuka setiap pindaian tambahan (hingga {{cap}} sehari).",
     "adsTitle": "✨ Iklan",
-    "adFreeThanks": "Bebas iklan — terima kasih sudah mendukung Leafkin! 💚",
     "adsSupported": "Leafkin gratis, didukung oleh beberapa iklan kecil.",
     "aboutTitle": "Tentang",
     "version": "Leafkin v{{version}}",
     "disclaimer": "Identifikasi tanaman serta panduan perawatan, kesehatan, dan keamanan untuk dimakan dibuat oleh AI dan sesekali bisa keliru. Jangan pernah memakan tanaman liar hanya berdasarkan aplikasi ini — selalu pastikan dulu ke ahli setempat."
-  },
-  "removeAds": {
-    "title": "Leafkin tanpa iklan",
-    "subtitle": "Semua tetap gratis. Hanya jadi lebih tenang.",
-    "benefit1": "🚫 Tanpa banner di mana pun dalam aplikasi",
-    "benefit2": "▶️ Tanpa video — hingga {{cap}} pindaian sehari, langsung ke hasil",
-    "benefit3": "💚 Sekali bayar, milik Anda selamanya — bukan langganan",
-    "benefit4": "🌱 Membantu Leafkin tetap gratis untuk semua orang",
-    "buy": "Hapus iklan — {{price}}"
   },
   "reminders": {
     "channel": "Pengingat penyiraman",

@@ -13,15 +13,14 @@ const MAX_IMAGES = 3;
 export default function Capture() {
   const router = useRouter();
   const { t } = useTranslation();
-  const adFree = useAppStore((s) => s.adFree);
   const setPendingScan = useAppStore((s) => s.setPendingScan);
   const [images, setImages] = useState<string[]>([]);
   const [allowance, setAllowance] = useState<ScanAllowance | null>(null);
 
   useFocusEffect(
     useCallback(() => {
-      getScanAllowance(!!adFree).then(setAllowance);
-    }, [adFree])
+      getScanAllowance().then(setAllowance);
+    }, [])
   );
 
   const limitReached = allowance?.totalLeft === 0;
@@ -69,7 +68,7 @@ export default function Capture() {
           {t("capture.tip")}
         </Text>
 
-        {allowance && <AllowanceNote allowance={allowance} adFree={!!adFree} />}
+        {allowance && <AllowanceNote allowance={allowance} />}
 
         <View className="flex-row flex-wrap gap-3 mb-4">
           {images.map((uri) => (
@@ -101,7 +100,7 @@ export default function Capture() {
   );
 }
 
-function AllowanceNote({ allowance, adFree }: { allowance: ScanAllowance; adFree: boolean }) {
+function AllowanceNote({ allowance }: { allowance: ScanAllowance }) {
   const { t } = useTranslation();
   let text: string;
   let tone = "bg-leaf-50 text-leaf-800";
@@ -109,7 +108,7 @@ function AllowanceNote({ allowance, adFree }: { allowance: ScanAllowance; adFree
   if (allowance.totalLeft === 0) {
     text = t("capture.limitNote", { cap: DAILY_SCAN_CAP });
     tone = "bg-amber-50 text-amber-900";
-  } else if (adFree || allowance.freeLeft > 0) {
+  } else if (allowance.freeLeft > 0) {
     text = t("common.freeScansLeft", { count: allowance.freeLeft });
   } else {
     text = t("capture.adNote", { left: allowance.totalLeft });

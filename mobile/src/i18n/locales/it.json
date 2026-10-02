@@ -6,12 +6,11 @@
     "watered": "Annaffiata",
     "backHome": "Torna alla home",
     "scanPlant": "📷 Scansiona una pianta",
-    "removeAds": "Rimuovi pubblicità",
-    "restorePurchase": "Ripristina acquisto",
     "days_one": "{{count}} giorno",
     "days_other": "{{count}} giorni",
     "freeScansLeft_one": "Ti resta {{count}} scansione gratuita oggi",
-    "freeScansLeft_other": "Ti restano {{count}} scansioni gratuite oggi"
+    "freeScansLeft_other": "Ti restano {{count}} scansioni gratuite oggi",
+    "ad": "Annuncio"
   },
   "nav": {
     "newScan": "Nuova scansione",
@@ -183,23 +182,12 @@
     "turnOn": "Attiva i promemoria",
     "remindAt": "Ricordamelo alle:",
     "scansTitle": "📷 Scansioni giornaliere",
-    "scansAdFree": "Fino a {{cap}} scansioni al giorno, senza video.",
     "scansFree": "{{free}} scansioni gratuite ogni giorno. Dopo, un breve video facoltativo sblocca ogni scansione extra (fino a {{cap}} al giorno).",
     "adsTitle": "✨ Pubblicità",
-    "adFreeThanks": "Senza pubblicità — grazie per sostenere Leafkin! 💚",
     "adsSupported": "Leafkin è gratuita, sostenuta da qualche piccolo annuncio.",
     "aboutTitle": "Informazioni",
     "version": "Leafkin v{{version}}",
     "disclaimer": "L’identificazione delle piante e i consigli su cura, salute e commestibilità sono generati dall’IA e possono talvolta essere sbagliati. Non mangiare mai una pianta selvatica basandoti solo su questa app — fai sempre confermare prima da un esperto locale."
-  },
-  "removeAds": {
-    "title": "Leafkin, senza pubblicità",
-    "subtitle": "Tutto resta gratuito. Diventa solo più tranquillo.",
-    "benefit1": "🚫 Nessun banner, in nessuna parte dell’app",
-    "benefit2": "▶️ Nessun video — fino a {{cap}} scansioni al giorno, dritto ai risultati",
-    "benefit3": "💚 Un solo pagamento, tuo per sempre — non è un abbonamento",
-    "benefit4": "🌱 Aiuta a mantenere Leafkin gratuita per tutti gli altri",
-    "buy": "Rimuovi pubblicità — {{price}}"
   },
   "reminders": {
     "channel": "Promemoria di annaffiatura",

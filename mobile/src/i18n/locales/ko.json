@@ -6,10 +6,9 @@
     "watered": "물 줌",
     "backHome": "홈으로",
     "scanPlant": "📷 식물 스캔하기",
-    "removeAds": "광고 제거",
-    "restorePurchase": "구매 복원",
     "days_other": "{{count}}일",
-    "freeScansLeft_other": "오늘 무료 스캔 {{count}}회 남음"
+    "freeScansLeft_other": "오늘 무료 스캔 {{count}}회 남음",
+    "ad": "광고"
   },
   "nav": {
     "newScan": "새 스캔",
@@ -174,23 +173,12 @@
     "turnOn": "알림 켜기",
     "remindAt": "알림 시간:",
     "scansTitle": "📷 하루 스캔",
-    "scansAdFree": "하루 최대 {{cap}}회, 영상 없이 스캔할 수 있어요.",
     "scansFree": "매일 {{free}}회 무료 스캔. 이후에는 짧은 영상(선택)을 보면 추가 스캔이 열려요 (하루 최대 {{cap}}회).",
     "adsTitle": "✨ 광고",
-    "adFreeThanks": "광고 없음 — Leafkin을 응원해 주셔서 감사해요! 💚",
     "adsSupported": "Leafkin은 작은 광고 몇 개로 무료로 운영돼요.",
     "aboutTitle": "앱 정보",
     "version": "Leafkin v{{version}}",
     "disclaimer": "식물 식별과 관리·건강·식용 관련 안내는 AI가 생성하며 가끔 틀릴 수 있어요. 이 앱만 믿고 야생 식물을 절대 먹지 마세요 — 반드시 먼저 지역 전문가에게 확인하세요."
-  },
-  "removeAds": {
-    "title": "광고 없는 Leafkin",
-    "subtitle": "모든 기능은 계속 무료예요. 그저 더 조용해질 뿐이에요.",
-    "benefit1": "🚫 앱 어디에도 배너 없음",
-    "benefit2": "▶️ 영상 없음 — 하루 최대 {{cap}}회, 바로 결과로",
-    "benefit3": "💚 한 번 결제로 영원히 — 구독이 아니에요",
-    "benefit4": "🌱 다른 모든 사람이 Leafkin을 무료로 쓰도록 도와요",
-    "buy": "광고 제거 — {{price}}"
   },
   "reminders": {
     "channel": "물주기 알림",

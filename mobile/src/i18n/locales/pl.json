@@ -6,8 +6,6 @@
     "watered": "Podlane",
     "backHome": "Wróć do startu",
     "scanPlant": "📷 Zeskanuj roślinę",
-    "removeAds": "Usuń reklamy",
-    "restorePurchase": "Przywróć zakup",
     "days_one": "{{count}} dzień",
     "days_few": "{{count}} dni",
     "days_many": "{{count}} dni",
@@ -15,7 +13,8 @@
     "freeScansLeft_one": "Został {{count}} darmowy skan na dziś",
     "freeScansLeft_few": "Zostały {{count}} darmowe skany na dziś",
     "freeScansLeft_many": "Zostało {{count}} darmowych skanów na dziś",
-    "freeScansLeft_other": "Zostało {{count}} darmowych skanów na dziś"
+    "freeScansLeft_other": "Zostało {{count}} darmowych skanów na dziś",
+    "ad": "Reklama"
   },
   "nav": {
     "newScan": "Nowy skan",
@@ -201,23 +200,12 @@
     "turnOn": "Włącz przypomnienia",
     "remindAt": "Przypominaj o:",
     "scansTitle": "📷 Dzienne skany",
-    "scansAdFree": "Do {{cap}} skanów dziennie, bez filmów.",
     "scansFree": "{{free}} darmowe skany każdego dnia. Potem krótki, opcjonalny film odblokowuje każdy dodatkowy skan (do {{cap}} dziennie).",
     "adsTitle": "✨ Reklamy",
-    "adFreeThanks": "Bez reklam — dziękujemy za wspieranie Leafkin! 💚",
     "adsSupported": "Leafkin jest darmowy dzięki kilku małym reklamom.",
     "aboutTitle": "O aplikacji",
     "version": "Leafkin v{{version}}",
     "disclaimer": "Identyfikacja roślin oraz wskazówki dotyczące pielęgnacji, zdrowia i jadalności są generowane przez AI i czasem mogą być błędne. Nigdy nie jedz dzikiej rośliny wyłącznie na podstawie tej aplikacji — zawsze najpierw potwierdź to u lokalnego eksperta."
-  },
-  "removeAds": {
-    "title": "Leafkin bez reklam",
-    "subtitle": "Wszystko zostaje za darmo. Po prostu robi się ciszej.",
-    "benefit1": "🚫 Żadnych banerów w całej aplikacji",
-    "benefit2": "▶️ Żadnych filmów — do {{cap}} skanów dziennie, prosto do wyników",
-    "benefit3": "💚 Jedna płatność, Twoje na zawsze — to nie subskrypcja",
-    "benefit4": "🌱 Pomaga utrzymać Leafkin za darmo dla wszystkich innych",
-    "buy": "Usuń reklamy — {{price}}"
   },
   "reminders": {
     "channel": "Przypomnienia o podlewaniu",

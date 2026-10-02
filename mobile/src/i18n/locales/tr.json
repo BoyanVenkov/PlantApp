@@ -6,12 +6,11 @@
     "watered": "Sulandı",
     "backHome": "Ana sayfaya dön",
     "scanPlant": "📷 Bitki tara",
-    "removeAds": "Reklamları kaldır",
-    "restorePurchase": "Satın alımı geri yükle",
     "days_one": "{{count}} gün",
     "days_other": "{{count}} gün",
     "freeScansLeft_one": "Bugün {{count}} ücretsiz tarama kaldı",
-    "freeScansLeft_other": "Bugün {{count}} ücretsiz tarama kaldı"
+    "freeScansLeft_other": "Bugün {{count}} ücretsiz tarama kaldı",
+    "ad": "Reklam"
   },
   "nav": {
     "newScan": "Yeni tarama",
@@ -183,23 +182,12 @@
     "turnOn": "Hatırlatıcıları aç",
     "remindAt": "Bana şu saatte hatırlat:",
     "scansTitle": "📷 Günlük taramalar",
-    "scansAdFree": "Günde {{cap}} taramaya kadar, video yok.",
     "scansFree": "Her gün {{free}} ücretsiz tarama. Sonrasında isteğe bağlı kısa bir video her ek taramanın kilidini açar (günde en fazla {{cap}}).",
     "adsTitle": "✨ Reklamlar",
-    "adFreeThanks": "Reklamsız — Leafkin’i desteklediğiniz için teşekkürler! 💚",
     "adsSupported": "Leafkin ücretsizdir ve birkaç küçük reklamla desteklenir.",
     "aboutTitle": "Hakkında",
     "version": "Leafkin v{{version}}",
     "disclaimer": "Bitki tanımlama ile bakım, sağlık ve yenebilirlik önerileri yapay zekâ tarafından üretilir ve zaman zaman hatalı olabilir. Yabani bir bitkiyi asla yalnızca bu uygulamaya dayanarak yemeyin — her zaman önce yerel bir uzmana doğrulatın."
-  },
-  "removeAds": {
-    "title": "Reklamsız Leafkin",
-    "subtitle": "Her şey ücretsiz kalır. Sadece daha sakin olur.",
-    "benefit1": "🚫 Uygulamanın hiçbir yerinde banner yok",
-    "benefit2": "▶️ Video yok — günde {{cap}} taramaya kadar, doğrudan sonuçlara",
-    "benefit3": "💚 Tek ödeme, sonsuza dek sizin — abonelik değil",
-    "benefit4": "🌱 Leafkin’in herkes için ücretsiz kalmasına yardım eder",
-    "buy": "Reklamları kaldır — {{price}}"
   },
   "reminders": {
     "channel": "Sulama hatırlatıcıları",

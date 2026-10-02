@@ -9,7 +9,7 @@ import { suggestedInterval } from "@/services/watering";
 import type { GardenPlant, ScanRecord } from "@/types/plant";
 import { SectionCard, Field } from "@/components/SectionCard";
 import { HealthBadge } from "@/components/HealthBadge";
-import { AdBanner } from "@/components/AdBanner";
+import { NativeAdCard } from "@/components/NativeAdCard";
 import { PrimaryButton } from "@/components/PrimaryButton";
 
 export default function Result() {
@@ -176,9 +176,10 @@ export default function Result() {
           </View>
         </SectionCard>
 
+        <NativeAdCard withMedia />
+
         <PrimaryButton label={t("result.scanAnother")} onPress={() => router.replace("/capture")} />
       </ScrollView>
-      <AdBanner />
     </SafeAreaView>
   );
 }

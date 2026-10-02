@@ -34,15 +34,14 @@ export interface ScanAllowance {
 }
 
 /**
- * The monetization policy in one place. Ad-free buyers get the whole daily
- * cap with no videos; everyone else gets FREE_SCANS_PER_DAY free, then one
+ * The monetization policy in one place: FREE_SCANS_PER_DAY free, then one
  * short opt-in video per extra scan. The server (dailyScanCap.ts) enforces the
  * ceiling; this mirror only lets the UI explain it up front.
  */
-export async function getScanAllowance(adFree: boolean): Promise<ScanAllowance> {
+export async function getScanAllowance(): Promise<ScanAllowance> {
   const { count } = await readUsage();
   const totalLeft = Math.max(0, DAILY_SCAN_CAP - count);
-  const freeLeft = adFree ? totalLeft : Math.min(totalLeft, Math.max(0, FREE_SCANS_PER_DAY - count));
+  const freeLeft = Math.min(totalLeft, Math.max(0, FREE_SCANS_PER_DAY - count));
   return { used: count, freeLeft, totalLeft, nextNeedsAd: totalLeft > 0 && freeLeft === 0 };
 }
 

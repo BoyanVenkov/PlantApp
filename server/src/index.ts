@@ -6,6 +6,11 @@ import analyzeRouter from "./routes/analyze.js";
 
 const app = express();
 
+// Hosts like Railway/Render/Fly sit behind one proxy hop. Without this every
+// request looks like it comes from the proxy's IP, so the rate limit below
+// would be shared by all users at once.
+app.set("trust proxy", 1);
+
 // Images sent as base64 can be a few MB; give body-parser headroom.
 app.use(express.json({ limit: "20mb" }));
 

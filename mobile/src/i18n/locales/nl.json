@@ -6,12 +6,11 @@
     "watered": "Water gegeven",
     "backHome": "Terug naar start",
     "scanPlant": "📷 Plant scannen",
-    "removeAds": "Advertenties verwijderen",
-    "restorePurchase": "Aankoop herstellen",
     "days_one": "{{count}} dag",
     "days_other": "{{count}} dagen",
     "freeScansLeft_one": "Nog {{count}} gratis scan vandaag",
-    "freeScansLeft_other": "Nog {{count}} gratis scans vandaag"
+    "freeScansLeft_other": "Nog {{count}} gratis scans vandaag",
+    "ad": "Advertentie"
   },
   "nav": {
     "newScan": "Nieuwe scan",
@@ -183,23 +182,12 @@
     "turnOn": "Herinneringen aanzetten",
     "remindAt": "Herinner me om:",
     "scansTitle": "📷 Dagelijkse scans",
-    "scansAdFree": "Tot {{cap}} scans per dag, zonder video’s.",
     "scansFree": "{{free}} gratis scans per dag. Daarna ontgrendelt een korte, optionele video elke extra scan (tot {{cap}} per dag).",
     "adsTitle": "✨ Advertenties",
-    "adFreeThanks": "Advertentievrij — bedankt voor je steun aan Leafkin! 💚",
     "adsSupported": "Leafkin is gratis, mogelijk gemaakt door een paar kleine advertenties.",
     "aboutTitle": "Over",
     "version": "Leafkin v{{version}}",
     "disclaimer": "Plantherkenning en advies over verzorging, gezondheid en eetbaarheid worden door AI gegenereerd en kunnen soms fout zijn. Eet nooit een wilde plant alleen op basis van deze app — laat het altijd eerst bevestigen door een lokale expert."
-  },
-  "removeAds": {
-    "title": "Leafkin, zonder advertenties",
-    "subtitle": "Alles blijft gratis. Het wordt alleen rustiger.",
-    "benefit1": "🚫 Geen banners, nergens in de app",
-    "benefit2": "▶️ Geen video’s — tot {{cap}} scans per dag, direct naar de resultaten",
-    "benefit3": "💚 Eén betaling, voor altijd van jou — geen abonnement",
-    "benefit4": "🌱 Helpt Leafkin gratis te houden voor iedereen",
-    "buy": "Advertenties verwijderen — {{price}}"
   },
   "reminders": {
     "channel": "Waterherinneringen",

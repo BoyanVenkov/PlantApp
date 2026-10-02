@@ -7,11 +7,9 @@ import { useTranslation } from "react-i18next";
 import { loadSavedLanguage } from "@/i18n";
 import { initAds } from "@/services/ads";
 import { rescheduleAllReminders, setupReminderChannel, useReminderTaps } from "@/services/reminders";
-import { useAppStore } from "@/state/useAppStore";
 
 export default function RootLayout() {
   const { t } = useTranslation();
-  const refreshAdFree = useAppStore((s) => s.refreshAdFree);
   // Held back until the saved language is applied, so the UI never flashes
   // in the phone's language first.
   const [languageReady, setLanguageReady] = useState(false);
@@ -19,7 +17,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     initAds().catch((err) => console.warn("[ads] init failed:", err));
-    refreshAdFree().catch(() => useAppStore.getState().setAdFree(false));
     loadSavedLanguage()
       .catch((err) => console.warn("[i18n] loading saved language failed:", err))
       .then(() => setLanguageReady(true))
@@ -28,7 +25,7 @@ export default function RootLayout() {
       .then(setupReminderChannel)
       .then(rescheduleAllReminders)
       .catch((err) => console.warn("[reminders] reschedule failed:", err));
-  }, [refreshAdFree]);
+  }, []);
 
   if (!languageReady) return null;
 
@@ -50,7 +47,6 @@ export default function RootLayout() {
         <Stack.Screen name="plants" options={{ title: t("nav.myPlants") }} />
         <Stack.Screen name="plant/[id]" options={{ title: "" }} />
         <Stack.Screen name="history" options={{ title: t("nav.history") }} />
-        <Stack.Screen name="remove-ads" options={{ title: t("common.removeAds"), presentation: "modal" }} />
         <Stack.Screen name="settings" options={{ title: t("nav.settings") }} />
       </Stack>
     </>

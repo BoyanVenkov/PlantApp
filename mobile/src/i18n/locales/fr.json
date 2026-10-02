@@ -6,12 +6,11 @@
     "watered": "Arrosée",
     "backHome": "Retour à l’accueil",
     "scanPlant": "📷 Scanner une plante",
-    "removeAds": "Supprimer les pubs",
-    "restorePurchase": "Restaurer l’achat",
     "days_one": "{{count}} jour",
     "days_other": "{{count}} jours",
     "freeScansLeft_one": "Encore {{count}} scan gratuit aujourd’hui",
-    "freeScansLeft_other": "Encore {{count}} scans gratuits aujourd’hui"
+    "freeScansLeft_other": "Encore {{count}} scans gratuits aujourd’hui",
+    "ad": "Annonce"
   },
   "nav": {
     "newScan": "Nouveau scan",
@@ -183,23 +182,12 @@
     "turnOn": "Activer les rappels",
     "remindAt": "Me rappeler à :",
     "scansTitle": "📷 Scans quotidiens",
-    "scansAdFree": "Jusqu’à {{cap}} scans par jour, sans vidéos.",
     "scansFree": "{{free}} scans gratuits chaque jour. Ensuite, une courte vidéo facultative débloque chaque scan supplémentaire (jusqu’à {{cap}} par jour).",
     "adsTitle": "✨ Publicités",
-    "adFreeThanks": "Sans pub — merci de soutenir Leafkin ! 💚",
     "adsSupported": "Leafkin est gratuit, financé par quelques petites publicités.",
     "aboutTitle": "À propos",
     "version": "Leafkin v{{version}}",
     "disclaimer": "L’identification des plantes et les conseils d’entretien, de santé et de comestibilité sont générés par une IA et peuvent parfois être erronés. Ne mangez jamais une plante sauvage sur la seule base de cette app — faites toujours confirmer par un expert local."
-  },
-  "removeAds": {
-    "title": "Leafkin, sans pub",
-    "subtitle": "Tout reste gratuit. C’est juste plus calme.",
-    "benefit1": "🚫 Aucune bannière, nulle part dans l’app",
-    "benefit2": "▶️ Aucune vidéo — jusqu’à {{cap}} scans par jour, directement aux résultats",
-    "benefit3": "💚 Un seul paiement, à vous pour toujours — pas un abonnement",
-    "benefit4": "🌱 Aide à garder Leafkin gratuit pour tous les autres",
-    "buy": "Supprimer les pubs — {{price}}"
   },
   "reminders": {
     "channel": "Rappels d’arrosage",

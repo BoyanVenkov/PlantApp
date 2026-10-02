@@ -3,19 +3,26 @@ import mobileAds, { AdEventType, RewardedAd, RewardedAdEventType, TestIds } from
 
 /**
  * Ad policy (deliberately gentle — ratings are worth more than impressions):
- * - Banners on browse screens only (Home, My Plants, History, Result). Never on
- *   the camera, analyzing, or plant-detail screens where people are doing
- *   something.
+ * - Banners at the bottom of Home and My Plants.
+ * - Native ad cards (NativeAdCard) that look like the app's own cards: one on
+ *   the Result screen, one in History after the third scan. They earn more
+ *   than banners while being easier to scroll past.
+ * - Never on the camera, analyzing, or plant-detail screens where people are
+ *   doing something.
  * - No interstitials, ever. Nothing pops up uninvited.
  * - Rewarded videos only when the user taps a button that says "watch a short
  *   video", for scans beyond the daily free ones (see usageLimiter.ts).
- * - "Remove ads" buyers see none of the above.
  */
 
 export const bannerUnitId = (Platform.select({
   ios: process.env.EXPO_PUBLIC_ADMOB_BANNER_ID_IOS,
   android: process.env.EXPO_PUBLIC_ADMOB_BANNER_ID_ANDROID,
 }) || TestIds.BANNER) as string;
+
+export const nativeUnitId = (Platform.select({
+  ios: process.env.EXPO_PUBLIC_ADMOB_NATIVE_ID_IOS,
+  android: process.env.EXPO_PUBLIC_ADMOB_NATIVE_ID_ANDROID,
+}) || TestIds.NATIVE) as string;
 
 const rewardedUnitId = (Platform.select({
   ios: process.env.EXPO_PUBLIC_ADMOB_REWARDED_ID_IOS,

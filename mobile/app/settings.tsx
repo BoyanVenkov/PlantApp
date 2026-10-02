@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react";
 import { View, Text, ScrollView, Pressable, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import Constants from "expo-constants";
 import { useTranslation } from "react-i18next";
-import { restorePurchases, purchasesMockMode } from "@/services/subscriptions";
 import {
   REMINDER_HOURS,
   ensureReminderPermission,
@@ -15,15 +14,11 @@ import {
   setReminderHour,
 } from "@/services/reminders";
 import { DAILY_SCAN_CAP, FREE_SCANS_PER_DAY } from "@/services/usageLimiter";
-import { useAppStore } from "@/state/useAppStore";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { LanguageButton } from "@/components/LanguagePicker";
 
 export default function Settings() {
-  const router = useRouter();
   const { t } = useTranslation();
-  const adFree = useAppStore((s) => s.adFree);
-  const setAdFree = useAppStore((s) => s.setAdFree);
   const [hour, setHour] = useState<number | null>(null);
   const [notifGranted, setNotifGranted] = useState<boolean | null>(null);
 
@@ -86,26 +81,12 @@ export default function Settings() {
 
         <Card title={t("settings.scansTitle")}>
           <Text className="text-base text-gray-600">
-            {adFree
-              ? t("settings.scansAdFree", { cap: DAILY_SCAN_CAP })
-              : t("settings.scansFree", { free: FREE_SCANS_PER_DAY, cap: DAILY_SCAN_CAP })}
+            {t("settings.scansFree", { free: FREE_SCANS_PER_DAY, cap: DAILY_SCAN_CAP })}
           </Text>
         </Card>
 
         <Card title={t("settings.adsTitle")}>
-          <Text className="text-base text-gray-600 mb-3">
-            {adFree ? t("settings.adFreeThanks") : t("settings.adsSupported")}
-          </Text>
-          {!adFree && <PrimaryButton label={t("common.removeAds")} onPress={() => router.push("/remove-ads")} />}
-          {!purchasesMockMode && (
-            <View className="mt-2">
-              <PrimaryButton
-                label={t("common.restorePurchase")}
-                variant="secondary"
-                onPress={() => restorePurchases().then((ok) => ok && setAdFree(true))}
-              />
-            </View>
-          )}
+          <Text className="text-base text-gray-600">{t("settings.adsSupported")}</Text>
         </Card>
 
         <Card title={t("settings.aboutTitle")}>

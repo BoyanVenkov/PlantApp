@@ -6,10 +6,9 @@
     "watered": "已浇水",
     "backHome": "返回首页",
     "scanPlant": "📷 扫描植物",
-    "removeAds": "去除广告",
-    "restorePurchase": "恢复购买",
     "days_other": "{{count}} 天",
-    "freeScansLeft_other": "今天还剩 {{count}} 次免费扫描"
+    "freeScansLeft_other": "今天还剩 {{count}} 次免费扫描",
+    "ad": "广告"
   },
   "nav": {
     "newScan": "新扫描",
@@ -174,23 +173,12 @@
     "turnOn": "开启提醒",
     "remindAt": "提醒时间：",
     "scansTitle": "📷 每日扫描",
-    "scansAdFree": "每天最多 {{cap}} 次扫描，无需看视频。",
     "scansFree": "每天 {{free}} 次免费扫描。之后，看一段可选的短视频即可解锁一次额外扫描（每天最多 {{cap}} 次）。",
     "adsTitle": "✨ 广告",
-    "adFreeThanks": "无广告 — 感谢你支持 Leafkin！💚",
     "adsSupported": "Leafkin 免费使用，由少量小广告支持。",
     "aboutTitle": "关于",
     "version": "Leafkin v{{version}}",
     "disclaimer": "植物识别以及养护、健康和可食用性建议均由 AI 生成，偶尔可能出错。切勿仅凭本应用就食用野生植物 — 请务必先向当地专家确认。"
-  },
-  "removeAds": {
-    "title": "无广告的 Leafkin",
-    "subtitle": "所有功能依旧免费，只是更清静。",
-    "benefit1": "🚫 应用内不再有任何横幅广告",
-    "benefit2": "▶️ 无需看视频 — 每天最多 {{cap}} 次扫描，直达结果",
-    "benefit3": "💚 一次付费，永久拥有 — 不是订阅",
-    "benefit4": "🌱 帮助 Leafkin 对其他所有人保持免费",
-    "buy": "去除广告 — {{price}}"
   },
   "reminders": {
     "channel": "浇水提醒",
