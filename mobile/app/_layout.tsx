@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { loadSavedLanguage } from "@/i18n";
 import { initAds } from "@/services/ads";
 import { rescheduleAllReminders, setupReminderChannel, useReminderTaps } from "@/services/reminders";
+import { recordLaunch } from "@/services/reviewPrompt";
 
 export default function RootLayout() {
   const { t } = useTranslation();
@@ -17,8 +18,11 @@ export default function RootLayout() {
 
   useEffect(() => {
     initAds().catch((err) => console.warn("[ads] init failed:", err));
-    loadSavedLanguage()
-      .catch((err) => console.warn("[i18n] loading saved language failed:", err))
+    Promise.all([
+      loadSavedLanguage().catch((err) => console.warn("[i18n] loading saved language failed:", err)),
+      // Counted before Home renders, so its rating-prompt check sees this launch.
+      recordLaunch().catch((err) => console.warn("[review] launch count failed:", err)),
+    ])
       .then(() => setLanguageReady(true))
       // Keeps reminders right after reinstalls, OS reboots, or time zone
       // changes. Runs after the language loads since reminder text is localized.

@@ -11,6 +11,7 @@ import { listPlants, listScans } from "@/services/storage";
 import { markWatered } from "@/services/garden";
 import { daysUntilWater, needsWaterToday } from "@/services/watering";
 import { getScanAllowance, type ScanAllowance } from "@/services/usageLimiter";
+import { maybeAskForReview } from "@/services/reviewPrompt";
 import type { GardenPlant, ScanRecord } from "@/types/plant";
 
 function allowanceLine(t: TFunction, a: ScanAllowance | null): string {
@@ -34,6 +35,15 @@ export default function Home() {
   }, []);
 
   useFocusEffect(reload);
+
+  // Rating dialog, a moment after Home settles. Leaving Home first cancels it,
+  // so it never lands on top of the camera.
+  useFocusEffect(
+    useCallback(() => {
+      const timer = setTimeout(() => maybeAskForReview().catch(() => {}), 3000);
+      return () => clearTimeout(timer);
+    }, [])
+  );
 
   const thirsty = plants.filter(needsWaterToday).sort((a, b) => daysUntilWater(a) - daysUntilWater(b));
 

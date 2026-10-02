@@ -29,6 +29,7 @@
     "expo-secure-store": "~57.0.4",
     "expo-sqlite": "~57.0.3",
     "expo-status-bar": "~57.0.1",
+    "expo-store-review": "~57.0.3",
     "i18next": "^26.4.2",
     "nativewind": "^4.2.6",
     "react": "19.2.3",
