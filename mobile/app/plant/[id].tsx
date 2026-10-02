@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import { View, Text, Image, ScrollView, Pressable, TextInput, Alert, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { WaterStatusPill } from "@/components/WaterStatusPill";
 import { getPlant, getScan } from "@/services/storage";
@@ -11,17 +13,18 @@ import { formatHour, getReminderHour, hasReminderPermission } from "@/services/r
 import type { GardenPlant } from "@/types/plant";
 
 function formatDay(date: Date): string {
-  return date.toLocaleDateString([], { weekday: "long", month: "short", day: "numeric" });
+  return date.toLocaleDateString(i18n.language, { weekday: "long", month: "short", day: "numeric" });
 }
 
 export default function PlantDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { t } = useTranslation();
   const [plant, setPlant] = useState<GardenPlant | null | undefined>(undefined);
   const [name, setName] = useState("");
   const [scanExists, setScanExists] = useState(false);
   const [suggested, setSuggested] = useState<number | null>(null);
-  const [reminderInfo, setReminderInfo] = useState<string | null>(null);
+  const [reminderHour, setReminderHourState] = useState<number | null>(null);
   const [justWatered, setJustWatered] = useState(false);
 
   useFocusEffect(
@@ -35,7 +38,7 @@ export default function PlantDetail() {
         setScanExists(!!scan);
         setSuggested(scan ? suggestedInterval(scan.analysis.care.water.intervalDays) : null);
         const [granted, hour] = await Promise.all([hasReminderPermission(), getReminderHour()]);
-        setReminderInfo(granted ? `Reminder at ${formatHour(hour)} on the day` : null);
+        setReminderHourState(granted ? hour : null);
       })();
     }, [id])
   );
@@ -51,7 +54,7 @@ export default function PlantDetail() {
   if (plant === null) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-leaf-50 px-8">
-        <Text className="text-lg text-gray-600">This plant was removed.</Text>
+        <Text className="text-lg text-gray-600">{t("plant.removed")}</Text>
       </SafeAreaView>
     );
   }
@@ -77,10 +80,10 @@ export default function PlantDetail() {
   }
 
   function confirmRemove() {
-    Alert.alert(`Remove ${plant!.name}?`, "Its watering reminders will stop. The original scan stays in History.", [
-      { text: "Cancel", style: "cancel" },
+    Alert.alert(t("plant.removeTitle", { name: plant!.name }), t("plant.removeBody"), [
+      { text: t("common.cancel"), style: "cancel" },
       {
-        text: "Remove",
+        text: t("common.remove"),
         style: "destructive",
         onPress: async () => {
           await removeFromMyPlants(plant!.id);
@@ -103,53 +106,53 @@ export default function PlantDetail() {
           onSubmitEditing={saveName}
           returnKeyType="done"
           className="text-2xl font-extrabold text-leaf-900 py-1"
-          accessibilityLabel="Plant name"
+          accessibilityLabel={t("plant.nameLabel")}
         />
         <Text className="text-base italic text-leaf-600 mb-1">{plant.scientificName}</Text>
-        <Text className="text-xs text-gray-400 mb-4">Tap the name to rename it (e.g. “Kitchen monstera”).</Text>
+        <Text className="text-xs text-gray-400 mb-4">{t("plant.renameHint")}</Text>
 
         {/* Watering */}
         <View className="bg-white rounded-3xl p-5 mb-4 border border-sky-100">
           <View className="flex-row items-center justify-between mb-3">
-            <Text className="text-lg font-bold text-leaf-900">💧 Watering</Text>
+            <Text className="text-lg font-bold text-leaf-900">{t("plant.watering")}</Text>
             <WaterStatusPill plant={plant} />
           </View>
 
           <Text className="text-base text-gray-700">
-            Next: <Text className="font-bold">{formatDay(nextWaterDate(plant))}</Text>
+            {t("plant.next")}<Text className="font-bold">{formatDay(nextWaterDate(plant))}</Text>
           </Text>
           <Text className="text-base text-gray-700 mb-1">
-            Last watered: {since === 0 ? "today" : `${since} day${since === 1 ? "" : "s"} ago`}
+            {since === 0 ? t("plant.lastWateredToday") : t("plant.lastWatered", { count: since })}
           </Text>
-          <Text className="text-sm text-gray-500 mb-4">{reminderInfo ?? "Reminders are off — turn them on in Settings."}</Text>
+          <Text className="text-sm text-gray-500 mb-4">{reminderHour !== null ? t("plant.reminderAt", { time: formatHour(reminderHour) }) : t("plant.remindersOff")}</Text>
 
-          <PrimaryButton label={justWatered ? "✓ Watered — nice!" : "💧 I watered it"} onPress={water} disabled={justWatered} />
+          <PrimaryButton label={justWatered ? t("plant.wateredNice") : t("plant.iWatered")} onPress={water} disabled={justWatered} />
 
           <View className="flex-row items-center justify-between mt-5">
             <View className="flex-1">
-              <Text className="text-base font-semibold text-leaf-900">Water every</Text>
+              <Text className="text-base font-semibold text-leaf-900">{t("plant.waterEvery")}</Text>
               {suggested !== null && suggested !== plant.waterIntervalDays && (
-                <Text className="text-sm text-gray-500">Leafkin suggests {suggested} days</Text>
+                <Text className="text-sm text-gray-500">{t("plant.suggests", { count: suggested })}</Text>
               )}
             </View>
-            <Stepper label={`${plant.waterIntervalDays} day${plant.waterIntervalDays === 1 ? "" : "s"}`} onMinus={() => changeInterval(-1)} onPlus={() => changeInterval(1)} />
+            <Stepper label={t("common.days", { count: plant.waterIntervalDays })} onMinus={() => changeInterval(-1)} onPlus={() => changeInterval(1)} />
           </View>
           <Text className="text-sm text-gray-500 mt-2">
-            Soil still wet on reminder day? Add a day or two. Drying out fast in summer? Take a day off.
+            {t("plant.intervalTip")}
           </Text>
         </View>
 
         {scanExists && plant.scanId && (
           <View className="mb-3">
-            <PrimaryButton label="📖 Full care guide & health check" variant="secondary" onPress={() => router.push(`/result/${plant.scanId}`)} />
+            <PrimaryButton label={t("plant.fullGuide")} variant="secondary" onPress={() => router.push(`/result/${plant.scanId}`)} />
           </View>
         )}
         <View className="mb-3">
-          <PrimaryButton label="📷 New health check scan" variant="secondary" onPress={() => router.push("/capture")} />
+          <PrimaryButton label={t("plant.newHealthScan")} variant="secondary" onPress={() => router.push("/capture")} />
         </View>
 
         <Pressable onPress={confirmRemove} className="py-4 items-center">
-          <Text className="text-base font-semibold text-red-600">Remove from My Plants</Text>
+          <Text className="text-base font-semibold text-red-600">{t("plant.removeFromPlants")}</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>
@@ -157,13 +160,14 @@ export default function PlantDetail() {
 }
 
 function Stepper({ label, onMinus, onPlus }: { label: string; onMinus: () => void; onPlus: () => void }) {
+  const { t } = useTranslation();
   return (
     <View className="flex-row items-center bg-leaf-50 rounded-2xl border border-leaf-200">
-      <Pressable onPress={onMinus} className="px-4 py-2" hitSlop={6} accessibilityLabel="Fewer days">
+      <Pressable onPress={onMinus} className="px-4 py-2" hitSlop={6} accessibilityLabel={t("plant.fewerDays")}>
         <Text className="text-2xl font-bold text-leaf-800">−</Text>
       </Pressable>
       <Text className="text-base font-bold text-leaf-900 min-w-[64px] text-center">{label}</Text>
-      <Pressable onPress={onPlus} className="px-4 py-2" hitSlop={6} accessibilityLabel="More days">
+      <Pressable onPress={onPlus} className="px-4 py-2" hitSlop={6} accessibilityLabel={t("plant.moreDays")}>
         <Text className="text-2xl font-bold text-leaf-800">+</Text>
       </Pressable>
     </View>

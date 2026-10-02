@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { useAppStore } from "@/state/useAppStore";
 import { analyzePlant, DailyLimitReachedError } from "@/services/api";
 import { prepareImage } from "@/services/images";
@@ -11,13 +12,7 @@ import { showRewardedAd, type RewardedOutcome } from "@/services/ads";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import type { PlantAnalysis } from "@/types/plant";
 
-const TIPS = [
-  "🌱 Most houseplant deaths are from overwatering, not underwatering.",
-  "🔍 Checking the undersides of leaves is the fastest way to catch pests early.",
-  "☀️ 'Bright indirect light' means bright, but no direct sun rays hitting the leaves.",
-  "🪴 A pot with no drainage hole is one of the most common causes of root rot.",
-  "🌡️ Most tropical houseplants dislike cold drafts near windows and doors.",
-];
+const TIPS = ["analyzing.tip1", "analyzing.tip2", "analyzing.tip3", "analyzing.tip4", "analyzing.tip5"] as const;
 
 type Phase = "working" | "locked" | "limit" | "error";
 
@@ -28,11 +23,11 @@ interface Finished {
 
 export default function Analyzing() {
   const router = useRouter();
+  const { t } = useTranslation();
   const imageUris = useAppStore((s) => s.pendingImageUris);
   const needsAd = useAppStore((s) => s.pendingNeedsAd);
   const clearPendingScan = useAppStore((s) => s.clearPendingScan);
   const [phase, setPhase] = useState<Phase>("working");
-  const [error, setError] = useState<string | null>(null);
   const [unlocking, setUnlocking] = useState(false);
   const [tipIndex, setTipIndex] = useState(0);
   const finishedRef = useRef<Finished | null>(null);
@@ -82,7 +77,6 @@ export default function Analyzing() {
           setPhase("limit");
         } else {
           console.error(err);
-          setError(err instanceof Error ? err.message : "Something went wrong.");
           setPhase("error");
         }
       }
@@ -107,12 +101,12 @@ export default function Analyzing() {
     return (
       <Message
         emoji="🌿"
-        title="Your result is ready"
-        body="Finish the short video to unlock it. Rewards only count when the video plays to the end."
+        title={t("analyzing.lockedTitle")}
+        body={t("analyzing.lockedBody")}
       >
-        <PrimaryButton label="▶ Watch video & see result" onPress={unlock} loading={unlocking} />
+        <PrimaryButton label={t("analyzing.watchUnlock")} onPress={unlock} loading={unlocking} />
         <PrimaryButton
-          label="Discard this scan"
+          label={t("analyzing.discard")}
           variant="secondary"
           onPress={() => {
             clearPendingScan();
@@ -127,19 +121,19 @@ export default function Analyzing() {
     return (
       <Message
         emoji="🌙"
-        title="That's all for today"
-        body="You've reached today's scan limit. Your plants, reminders and care guides all still work — new scans unlock tomorrow."
+        title={t("analyzing.limitTitle")}
+        body={t("analyzing.limitBody")}
       >
-        <PrimaryButton label="Back home" onPress={() => router.replace("/")} />
+        <PrimaryButton label={t("common.backHome")} onPress={() => router.replace("/")} />
       </Message>
     );
   }
 
   if (phase === "error") {
     return (
-      <Message emoji="😕" title="Analysis failed" body={error ?? "Something went wrong."}>
-        <PrimaryButton label="Try again" onPress={() => router.replace("/capture")} />
-        <PrimaryButton label="Back home" variant="secondary" onPress={() => router.replace("/")} />
+      <Message emoji="😕" title={t("analyzing.errorTitle")} body={t("analyzing.errorBody")}>
+        <PrimaryButton label={t("analyzing.tryAgain")} onPress={() => router.replace("/capture")} />
+        <PrimaryButton label={t("common.backHome")} variant="secondary" onPress={() => router.replace("/")} />
       </Message>
     );
   }
@@ -148,8 +142,8 @@ export default function Analyzing() {
     <SafeAreaView className="flex-1 bg-leaf-900 items-center justify-center px-8">
       {imageUris[0] && <Image source={{ uri: imageUris[0] }} className="w-44 h-44 rounded-3xl mb-8 opacity-80" />}
       <ActivityIndicator size="large" color="#fff" />
-      <Text className="text-white text-xl font-semibold mt-4 mb-3">Consulting the botanist…</Text>
-      <Text className="text-leaf-200 text-base text-center">{TIPS[tipIndex]}</Text>
+      <Text className="text-white text-xl font-semibold mt-4 mb-3">{t("analyzing.working")}</Text>
+      <Text className="text-leaf-200 text-base text-center">{t(TIPS[tipIndex])}</Text>
     </SafeAreaView>
   );
 }

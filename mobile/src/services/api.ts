@@ -1,4 +1,5 @@
 import type { PlantAnalysis } from "@/types/plant";
+import { currentLanguage } from "@/i18n";
 import { getDeviceId } from "./deviceId";
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || "http://localhost:8787";
@@ -20,7 +21,7 @@ export async function analyzePlant(images: string[]): Promise<PlantAnalysis> {
       "Content-Type": "application/json",
       "X-Device-Id": deviceId,
     },
-    body: JSON.stringify({ images }),
+    body: JSON.stringify({ images, language: currentLanguage().tag }),
   });
 
   if (response.status === 429) {

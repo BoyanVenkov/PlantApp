@@ -160,14 +160,29 @@ Rules:
    average home (or garden, if clearly outdoors) during the growing season. It drives watering
    reminders, so give a single realistic integer (e.g. 7), never 0.
 8. Never break character, never mention that you are an AI model, and never include markdown or
-   commentary outside the JSON.`;
+   commentary outside the JSON.
+9. Write every human-readable text field (names, descriptions, lists, rejectionReason, disclaimer)
+   in the language the user message asks for. commonName is the name people use for this plant in
+   that language. scientificName stays in Latin, and enum fields keep their exact English values.`;
+
+const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
+
+/** "pt-BR" -> "Brazilian Portuguese"; anything unknown falls back to English. */
+function languageName(tag: string | undefined): string {
+  if (!tag) return "English";
+  try {
+    return languageNames.of(tag) ?? "English";
+  } catch {
+    return "English";
+  }
+}
 
 function toInlineImage(base64: string) {
   // Client sends raw base64 without a data: prefix; assume JPEG (camera/gallery default).
   return { inlineData: { mimeType: "image/jpeg", data: base64 } };
 }
 
-export async function analyzePlantImages(images: string[]): Promise<PlantAnalysis> {
+export async function analyzePlantImages(images: string[], language?: string): Promise<PlantAnalysis> {
   if (images.length === 0) {
     throw new Error("At least one image is required.");
   }
@@ -178,7 +193,13 @@ export async function analyzePlantImages(images: string[]): Promise<PlantAnalysi
       {
         role: "user",
         parts: [
-          { text: "Analyze the plant in these photo(s) and return the JSON described in your instructions." },
+          {
+            // Kept out of the system instruction so that stays identical across
+            // languages (and cacheable).
+            text:
+              "Analyze the plant in these photo(s) and return the JSON described in your instructions. " +
+              `Write all text fields in ${languageName(language)}.`,
+          },
           ...images.map(toInlineImage),
         ],
       },

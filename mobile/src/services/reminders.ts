@@ -3,6 +3,7 @@ import { Platform } from "react-native";
 import { useRouter } from "expo-router";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "@/i18n";
 import type { GardenPlant } from "@/types/plant";
 import { listPlants } from "./storage";
 import { daysSinceWatered, nextWaterDate } from "./watering";
@@ -25,7 +26,7 @@ Notifications.setNotificationHandler({
 export async function setupReminderChannel() {
   if (Platform.OS !== "android") return;
   await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
-    name: "Watering reminders",
+    name: i18n.t("reminders.channel"),
     importance: Notifications.AndroidImportance.DEFAULT,
   });
 }
@@ -82,11 +83,8 @@ async function scheduleOne(plant: GardenPlant, hour: number) {
   await Notifications.scheduleNotificationAsync({
     identifier: identifierFor(plant.id),
     content: {
-      title: `💧 Time to water your ${plant.name}`,
-      body:
-        days > 0
-          ? `Last watered ${days} day${days === 1 ? "" : "s"} ago. Tap to mark it done.`
-          : "Tap to mark it done.",
+      title: i18n.t("reminders.title", { name: plant.name }),
+      body: days > 0 ? i18n.t("reminders.body", { count: days }) : i18n.t("reminders.bodyNoDays"),
       data: { url: `/plant/${plant.id}` },
     },
     trigger: {
@@ -120,7 +118,7 @@ export async function rescheduleAllReminders() {
 export function formatHour(hour: number): string {
   const d = new Date();
   d.setHours(hour, 0, 0, 0);
-  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  return d.toLocaleTimeString(i18n.language, { hour: "numeric", minute: "2-digit" });
 }
 
 /** Tapping a watering reminder opens that plant, even from a cold start. */

@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "@/i18n";
 import type { GardenPlant } from "@/types/plant";
 
 /** Web preview: scheduled notifications are mobile-only, so these are no-ops. */
@@ -39,5 +40,5 @@ export function useReminderTaps() {}
 export function formatHour(hour: number): string {
   const d = new Date();
   d.setHours(hour, 0, 0, 0);
-  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  return d.toLocaleTimeString(i18n.language, { hour: "numeric", minute: "2-digit" });
 }

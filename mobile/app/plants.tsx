@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { View, Text, Image, FlatList, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { AdBanner } from "@/components/AdBanner";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { WaterStatusPill } from "@/components/WaterStatusPill";
@@ -12,6 +13,7 @@ import type { GardenPlant } from "@/types/plant";
 
 export default function MyPlants() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [plants, setPlants] = useState<GardenPlant[] | null>(null);
 
   const reload = useCallback(() => {
@@ -33,12 +35,12 @@ export default function MyPlants() {
       <SafeAreaView className="flex-1 bg-leaf-50" edges={["bottom"]}>
         <View className="flex-1 items-center justify-center px-8">
           <Text className="text-5xl mb-4">🪴</Text>
-          <Text className="text-xl font-bold text-leaf-900 text-center mb-2">No plants yet</Text>
+          <Text className="text-xl font-bold text-leaf-900 text-center mb-2">{t("plants.emptyTitle")}</Text>
           <Text className="text-base text-gray-600 text-center mb-6">
-            Scan a plant, then tap “Add to My Plants” — Leafkin will remind you when it needs water.
+            {t("plants.emptyBody")}
           </Text>
           <View className="w-full">
-            <PrimaryButton label="📷 Scan a plant" onPress={() => router.push("/capture")} />
+            <PrimaryButton label={t("common.scanPlant")} onPress={() => router.push("/capture")} />
           </View>
         </View>
         <AdBanner />
@@ -71,7 +73,7 @@ export default function MyPlants() {
               </View>
               {due && (
                 <Pressable onPress={() => water(item.id)} className="bg-sky-600 rounded-xl px-4 py-3 active:opacity-80">
-                  <Text className="text-base font-bold text-white">Watered</Text>
+                  <Text className="text-base font-bold text-white">{t("common.watered")}</Text>
                 </Pressable>
               )}
             </Pressable>

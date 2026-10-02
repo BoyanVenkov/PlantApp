@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { View, Text, Image, FlatList, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { listScans, deleteScan } from "@/services/storage";
 import type { ScanRecord } from "@/types/plant";
 import { HealthBadge } from "@/components/HealthBadge";
@@ -9,6 +10,7 @@ import { AdBanner } from "@/components/AdBanner";
 
 export default function History() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [scans, setScans] = useState<ScanRecord[]>([]);
 
   const reload = useCallback(() => {
@@ -18,16 +20,16 @@ export default function History() {
   useFocusEffect(reload);
 
   function confirmDelete(id: string) {
-    Alert.alert("Delete scan?", "This can't be undone. Plants in My Plants keep their photo and reminders.", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: () => deleteScan(id).then(reload) },
+    Alert.alert(t("history.deleteTitle"), t("history.deleteBody"), [
+      { text: t("common.cancel"), style: "cancel" },
+      { text: t("common.delete"), style: "destructive", onPress: () => deleteScan(id).then(reload) },
     ]);
   }
 
   if (scans.length === 0) {
     return (
       <SafeAreaView className="flex-1 bg-white items-center justify-center px-8">
-        <Text className="text-lg text-gray-500 text-center">No scans yet. Go scan a plant!</Text>
+        <Text className="text-lg text-gray-500 text-center">{t("history.empty")}</Text>
       </SafeAreaView>
     );
   }
@@ -53,7 +55,7 @@ export default function History() {
           </Pressable>
         )}
         ListFooterComponent={
-          <Text className="text-sm text-gray-400 text-center mt-2">Long-press a scan to delete it.</Text>
+          <Text className="text-sm text-gray-400 text-center mt-2">{t("history.longPressHint")}</Text>
         }
       />
       <AdBanner />

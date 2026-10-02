@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import { useTranslation } from "react-i18next";
 import type { GardenPlant } from "@/types/plant";
 import { waterStatus, type WaterUrgency } from "@/services/watering";
 
@@ -10,6 +11,7 @@ const STYLES: Record<WaterUrgency, { bg: string; fg: string }> = {
 };
 
 export function WaterStatusPill({ plant }: { plant: GardenPlant }) {
+  useTranslation(); // re-render when the language changes
   const { label, urgency } = waterStatus(plant);
   const s = STYLES[urgency];
   return (

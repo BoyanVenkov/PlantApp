@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import type { GardenPlant } from "@/types/plant";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -28,13 +29,10 @@ export type WaterUrgency = "overdue" | "today" | "soon" | "fine";
 
 export function waterStatus(plant: GardenPlant): { label: string; urgency: WaterUrgency } {
   const days = daysUntilWater(plant);
-  if (days < 0) {
-    const n = -days;
-    return { label: `Overdue by ${n} day${n === 1 ? "" : "s"}`, urgency: "overdue" };
-  }
-  if (days === 0) return { label: "Water today", urgency: "today" };
-  if (days === 1) return { label: "Water tomorrow", urgency: "soon" };
-  return { label: `Water in ${days} days`, urgency: "fine" };
+  if (days < 0) return { label: i18n.t("waterStatus.overdue", { count: -days }), urgency: "overdue" };
+  if (days === 0) return { label: i18n.t("waterStatus.today"), urgency: "today" };
+  if (days === 1) return { label: i18n.t("waterStatus.tomorrow"), urgency: "soon" };
+  return { label: i18n.t("waterStatus.inDays", { count: days }), urgency: "fine" };
 }
 
 export function needsWaterToday(plant: GardenPlant): boolean {
