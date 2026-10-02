@@ -116,9 +116,9 @@ account suspended for invalid traffic.
 Then, before submitting to the stores:
 - App icon, adaptive icon, favicon and splash (`splash-icon.png`) are all drawn from
   `mobile/assets/favicon.svg` (the Leafkin leaf).
-- The privacy policy lives in `server/public/privacy.html`, is served at `/privacy` and linked
-  from Settings. Fill in its operator/contact placeholders and use that URL in both store
-  listings.
+- The privacy policy is `docs/privacy.html`, published by GitHub Pages at
+  https://boyanvenkov.github.io/PlantApp/privacy.html (repo Settings → Pages → `main` / `/docs`).
+  It's linked from Settings; use the same URL in both store listings.
 - Crash reporting: create a Sentry project, put its DSN in `EXPO_PUBLIC_SENTRY_DSN` in
   `mobile/eas.json`. For readable stack traces, also add the `organization`/`project` options to
   the `@sentry/react-native` plugin in `app.json`, store `SENTRY_AUTH_TOKEN` as an EAS secret, and

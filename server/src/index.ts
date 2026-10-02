@@ -1,5 +1,4 @@
 import "dotenv/config";
-import path from "node:path";
 import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
@@ -31,8 +30,8 @@ app.use(
 );
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
-// Linked from the app's Settings and from both store listings.
-app.get("/privacy", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "privacy.html")));
+// The policy lives on GitHub Pages (docs/privacy.html); this just forwards old links.
+app.get("/privacy", (_req, res) => res.redirect(301, "https://boyanvenkov.github.io/PlantApp/privacy.html"));
 app.use("/api", analyzeRouter);
 
 const port = Number(process.env.PORT || 8787);

@@ -15,9 +15,11 @@ import {
 } from "@/services/reminders";
 import { DAILY_SCAN_CAP, FREE_SCANS_PER_DAY } from "@/services/usageLimiter";
 import { FEEDBACK_EMAIL, sendFeedback } from "@/services/feedback";
-import { API_BASE_URL } from "@/services/api";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { LanguageButton } from "@/components/LanguagePicker";
+
+/** docs/privacy.html, published by GitHub Pages. Also the URL in both store listings. */
+const PRIVACY_URL = "https://boyanvenkov.github.io/PlantApp/privacy.html";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -104,7 +106,7 @@ export default function Settings() {
             {t("settings.disclaimer")}
           </Text>
           <Text
-            onPress={() => Linking.openURL(`${API_BASE_URL}/privacy`)}
+            onPress={() => Linking.openURL(PRIVACY_URL)}
             className="text-base font-semibold text-leaf-700 mt-3"
             accessibilityRole="link"
           >
