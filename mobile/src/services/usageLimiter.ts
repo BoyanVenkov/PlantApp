@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const KEY = "plantapp.scan_usage";
 
 /** Scans per day with no ad at all. */
-export const FREE_SCANS_PER_DAY = Number(process.env.EXPO_PUBLIC_FREE_SCANS_PER_DAY || 3);
+export const FREE_SCANS_PER_DAY = Number(process.env.EXPO_PUBLIC_FREE_SCANS_PER_DAY || 2);
 /** Hard ceiling; scans between FREE and CAP each need a rewarded video. */
 export const DAILY_SCAN_CAP = Number(process.env.EXPO_PUBLIC_DAILY_SCAN_CAP || 15);
 

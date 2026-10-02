@@ -7,8 +7,6 @@ import de from "./locales/de.json";
 import en from "./locales/en.json";
 import es from "./locales/es.json";
 import fr from "./locales/fr.json";
-import hi from "./locales/hi.json";
-import id from "./locales/id.json";
 import it from "./locales/it.json";
 import ja from "./locales/ja.json";
 import ko from "./locales/ko.json";
@@ -18,11 +16,10 @@ import pt from "./locales/pt.json";
 import ru from "./locales/ru.json";
 import tr from "./locales/tr.json";
 import uk from "./locales/uk.json";
-import zh from "./locales/zh.json";
 
 /**
  * `tag` is the BCP 47 tag sent to the server (so Gemini writes Brazilian
- * Portuguese, Simplified Chinese...) and used for date/time formatting.
+ * Portuguese) and used for date/time formatting.
  */
 export const LANGUAGES = [
   { code: "en", tag: "en", name: "English", english: "English" },
@@ -37,17 +34,14 @@ export const LANGUAGES = [
   { code: "uk", tag: "uk", name: "Українська", english: "Ukrainian" },
   { code: "bg", tag: "bg", name: "Български", english: "Bulgarian" },
   { code: "tr", tag: "tr", name: "Türkçe", english: "Turkish" },
-  { code: "hi", tag: "hi", name: "हिन्दी", english: "Hindi" },
-  { code: "id", tag: "id", name: "Bahasa Indonesia", english: "Indonesian" },
   { code: "ja", tag: "ja", name: "日本語", english: "Japanese" },
   { code: "ko", tag: "ko", name: "한국어", english: "Korean" },
-  { code: "zh", tag: "zh-Hans", name: "简体中文", english: "Chinese (Simplified)" },
 ] as const;
 
 export type Language = (typeof LANGUAGES)[number];
 export type LanguageCode = Language["code"];
 
-const RESOURCES: Record<LanguageCode, object> = { bg, de, en, es, fr, hi, id, it, ja, ko, nl, pl, pt, ru, tr, uk, zh };
+const RESOURCES: Record<LanguageCode, object> = { bg, de, en, es, fr, it, ja, ko, nl, pl, pt, ru, tr, uk };
 
 const STORAGE_KEY = "plantapp.language";
 

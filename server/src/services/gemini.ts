@@ -154,8 +154,9 @@ Rules:
      unfamiliar plant, and to never eat anything based on a single photo-based app identification.
    - benefits should describe genuine nutritional/traditional/medicinal uses when isEdible is true,
      but must not overstate medical claims.
-6. Keep it short: every description/text field is 1-2 plain sentences, every list has at most 4
-   items, and alternativeMatches has at most 3 entries. Users read this on a phone.
+6. Keep it short: every description/text field is 1 plain sentence, every list has at most 3
+   short items, and alternativeMatches has at most 2 entries. Users read this on a phone, and
+   every extra word costs money. The one exception is safetyDisclaimer: keep it complete.
 7. care.water.intervalDays is the typical number of days between waterings for this plant in an
    average home (or garden, if clearly outdoors) during the growing season. It drives watering
    reminders, so give a single realistic integer (e.g. 7), never 0.

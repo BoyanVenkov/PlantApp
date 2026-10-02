@@ -18,7 +18,7 @@ healthy right now, and whether you can eat it (and why you'd want to, or definit
 ```
 
 - **mobile/** — the Expo (React Native + TypeScript) app. Camera capture, results UI, local
-  scan history, My Plants with watering reminders, ads, and 17 UI languages.
+  scan history, My Plants with watering reminders, ads, and 14 UI languages.
 - **server/** — a small Express backend. This is where your Gemini API key lives. It's the
   only thing allowed to call Gemini, and it enforces the daily scan cap.
 
@@ -36,8 +36,8 @@ on your key within hours of finding it. The backend is non-negotiable for a real
 |---|---|---|
 | App framework | Expo / React Native | One TypeScript codebase → iOS + Android. Mature libraries exist for every risky piece here (camera, AdMob, notifications). |
 | AI model | **Gemini 3.5 Flash-Lite** | Multimodal vision + enforced JSON-schema output in one call. With minimal thinking, medium media resolution, short answers and photos resized to 1024px on the phone, a scan measured **~0.22¢** against the live API. Swap to `gemini-3.6-flash` (one env var, `server/.env`) for more accuracy on tricky species at ~2-3x the cost. The server logs every scan's real token count and cost. |
-| Ads | Google AdMob | Gentle by design, **no interstitials**: banners on Home and My Plants, and labeled native ad cards styled like the app's own cards (one on Result, one in History after the third scan). The first `EXPO_PUBLIC_FREE_SCANS_PER_DAY` (3) scans each day are free; each extra scan is unlocked by an opt-in rewarded video that plays *while* Gemini works, so it adds no waiting. Policy lives in `mobile/src/services/usageLimiter.ts` and `ads.ts`. There is no paid tier. |
-| Languages | `i18next` + `expo-localization` | 17 UI languages in `mobile/src/i18n/locales/`, defaulting to the phone's language, switchable from the 🌐 pill on Home. The app sends the language with each scan and Gemini writes its answer in it. |
+| Ads | Google AdMob | Gentle by design, **no interstitials**: banners on Home and My Plants, and labeled native ad cards styled like the app's own cards (one on Result, one in History after the third scan). The first `EXPO_PUBLIC_FREE_SCANS_PER_DAY` (2) scans each day are free; each extra scan is unlocked by an opt-in rewarded video that plays *while* Gemini works, so it adds no waiting. Policy lives in `mobile/src/services/usageLimiter.ts` and `ads.ts`. There is no paid tier. |
+| Languages | `i18next` + `expo-localization` | 14 UI languages (EU + English, Japanese, Korean, plus Russian/Ukrainian/Turkish for the large communities in the EU) in `mobile/src/i18n/locales/`, defaulting to the phone's language, switchable from the 🌐 pill on Home. The app sends the language with each scan and Gemini writes its answer in it. |
 | Watering reminders | `expo-notifications` (local) | Gemini returns `care.water.intervalDays`; "Add to My Plants" schedules a reminder at the user's chosen hour on the due day. Rebuilt from the plants table on every app launch. |
 | Local storage | SQLite (`expo-sqlite`) | Scan history and My Plants survive app restarts and work fully offline, even though a new *scan* needs network. Photos are resized and copied into the documents dir so the OS can't purge them. |
 | Cost protection | Server-side daily scan cap (15) | Applies to everyone. Bounds the worst-case Gemini bill per device. |
