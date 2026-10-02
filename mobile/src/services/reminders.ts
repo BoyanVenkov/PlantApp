@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Platform } from "react-native";
+import { useRouter } from "expo-router";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { GardenPlant } from "@/types/plant";
@@ -119,4 +121,18 @@ export function formatHour(hour: number): string {
   const d = new Date();
   d.setHours(hour, 0, 0, 0);
   return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+
+/** Tapping a watering reminder opens that plant, even from a cold start. */
+export function useReminderTaps() {
+  const router = useRouter();
+  const lastResponse = Notifications.useLastNotificationResponse();
+
+  useEffect(() => {
+    const url = lastResponse?.notification.request.content.data?.url;
+    if (typeof url === "string") {
+      router.push(url as never);
+      Notifications.clearLastNotificationResponseAsync().catch(() => {});
+    }
+  }, [lastResponse, router]);
 }

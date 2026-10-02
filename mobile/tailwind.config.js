@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
+  // "media" makes NativeWind throw on web whenever the <html> class changes.
+  // The app has no dark: styles, so "class" changes nothing visually.
+  darkMode: "class",
   theme: {
     extend: {
       // Bumped up from Tailwind's defaults (xs 12, sm 14, base 16...) for

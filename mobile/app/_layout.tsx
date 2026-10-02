@@ -1,25 +1,10 @@
 import "@/theme/global.css";
 import { useEffect } from "react";
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import * as Notifications from "expo-notifications";
 import { initAds } from "@/services/ads";
-import { rescheduleAllReminders, setupReminderChannel } from "@/services/reminders";
+import { rescheduleAllReminders, setupReminderChannel, useReminderTaps } from "@/services/reminders";
 import { useAppStore } from "@/state/useAppStore";
-
-/** Tapping a watering reminder opens that plant, even from a cold start. */
-function useReminderTaps() {
-  const router = useRouter();
-  const lastResponse = Notifications.useLastNotificationResponse();
-
-  useEffect(() => {
-    const url = lastResponse?.notification.request.content.data?.url;
-    if (typeof url === "string") {
-      router.push(url as never);
-      Notifications.clearLastNotificationResponseAsync().catch(() => {});
-    }
-  }, [lastResponse, router]);
-}
 
 export default function RootLayout() {
   const refreshAdFree = useAppStore((s) => s.refreshAdFree);

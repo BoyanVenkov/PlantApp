@@ -1,0 +1,10 @@
+{
+  "name": "leafkin",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n server,app -c green,cyan \"npm --prefix server run dev\" \"npm --prefix mobile run web\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

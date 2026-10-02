@@ -14,7 +14,7 @@
       "**/*"
     ],
     "web": {
-      "favicon": "./assets/favicon.svg"
+      "favicon": "./assets/favicon.png"
     },
     "ios": {
       "supportsTablet": true,
