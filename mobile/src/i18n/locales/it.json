@@ -187,7 +187,12 @@
     "adsSupported": "Leafkin è gratuita, sostenuta da qualche piccolo annuncio.",
     "aboutTitle": "Informazioni",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "L’identificazione delle piante e i consigli su cura, salute e commestibilità sono generati dall’IA e possono talvolta essere sbagliati. Non mangiare mai una pianta selvatica basandoti solo su questa app — fai sempre confermare prima da un esperto locale."
+    "disclaimer": "L’identificazione delle piante e i consigli su cura, salute e commestibilità sono generati dall’IA e possono talvolta essere sbagliati. Non mangiare mai una pianta selvatica basandoti solo su questa app — fai sempre confermare prima da un esperto locale.",
+    "feedbackTitle": "💬 Feedback",
+    "feedbackBody": "Hai trovato un bug o hai un’idea? Leggiamo ogni messaggio.",
+    "feedbackButton": "Invia feedback",
+    "feedbackNoMail": "Nessuna app email trovata. Scrivi a {{email}}.",
+    "privacyPolicy": "Informativa sulla privacy"
   },
   "reminders": {
     "channel": "Promemoria di annaffiatura",

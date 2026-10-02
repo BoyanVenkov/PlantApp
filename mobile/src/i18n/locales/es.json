@@ -187,7 +187,12 @@
     "adsSupported": "Leafkin es gratis gracias a unos pocos anuncios pequeños.",
     "aboutTitle": "Acerca de",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "La identificación de plantas y los consejos de cuidado, salud y comestibilidad los genera una IA y a veces pueden ser incorrectos. Nunca comas una planta silvestre basándote solo en esta app — confírmalo siempre antes con un experto local."
+    "disclaimer": "La identificación de plantas y los consejos de cuidado, salud y comestibilidad los genera una IA y a veces pueden ser incorrectos. Nunca comas una planta silvestre basándote solo en esta app — confírmalo siempre antes con un experto local.",
+    "feedbackTitle": "💬 Comentarios",
+    "feedbackBody": "¿Encontraste un error o tienes una idea? Leemos todos los mensajes.",
+    "feedbackButton": "Enviar comentarios",
+    "feedbackNoMail": "No se encontró una app de correo. Escribe a {{email}}.",
+    "privacyPolicy": "Política de privacidad"
   },
   "reminders": {
     "channel": "Recordatorios de riego",

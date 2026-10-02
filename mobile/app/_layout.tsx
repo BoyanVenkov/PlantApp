@@ -8,8 +8,11 @@ import { loadSavedLanguage } from "@/i18n";
 import { initAds } from "@/services/ads";
 import { rescheduleAllReminders, setupReminderChannel, useReminderTaps } from "@/services/reminders";
 import { recordLaunch } from "@/services/reviewPrompt";
+import { initMonitoring, withMonitoring } from "@/services/monitoring";
 
-export default function RootLayout() {
+initMonitoring();
+
+function RootLayout() {
   const { t } = useTranslation();
   // Held back until the saved language is applied, so the UI never flashes
   // in the phone's language first.
@@ -56,3 +59,5 @@ export default function RootLayout() {
     </>
   );
 }
+
+export default withMonitoring(RootLayout);

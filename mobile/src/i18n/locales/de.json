@@ -187,7 +187,12 @@
     "adsSupported": "Leafkin ist kostenlos und wird durch ein wenig dezente Werbung finanziert.",
     "aboutTitle": "Über",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "Pflanzenbestimmung sowie Hinweise zu Pflege, Gesundheit und Essbarkeit werden von einer KI erstellt und können gelegentlich falsch sein. Iss niemals eine Wildpflanze nur aufgrund dieser App — lass sie immer zuerst von einer fachkundigen Person vor Ort bestätigen."
+    "disclaimer": "Pflanzenbestimmung sowie Hinweise zu Pflege, Gesundheit und Essbarkeit werden von einer KI erstellt und können gelegentlich falsch sein. Iss niemals eine Wildpflanze nur aufgrund dieser App — lass sie immer zuerst von einer fachkundigen Person vor Ort bestätigen.",
+    "feedbackTitle": "💬 Feedback",
+    "feedbackBody": "Einen Fehler gefunden oder eine Idee? Wir lesen jede Nachricht.",
+    "feedbackButton": "Feedback senden",
+    "feedbackNoMail": "Keine E-Mail-App gefunden. Schreib an {{email}}.",
+    "privacyPolicy": "Datenschutzerklärung"
   },
   "reminders": {
     "channel": "Gieß-Erinnerungen",

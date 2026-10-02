@@ -114,11 +114,16 @@ account suspended for invalid traffic.
    alert on the Google Cloud project too.
 
 Then, before submitting to the stores:
-- App icon, adaptive icon and favicon are generated from `mobile/assets/favicon.svg` (the
-  Leafkin leaf). The splash image is still a 1x1 px placeholder.
-- Write a real privacy policy (required by both stores, and by AdMob) covering: photos sent to
-  Gemini for analysis, and anonymous device usage tracking for the free-scan cap. Link it from
-  `app/settings.tsx`.
+- App icon, adaptive icon, favicon and splash (`splash-icon.png`) are all drawn from
+  `mobile/assets/favicon.svg` (the Leafkin leaf).
+- The privacy policy lives in `server/public/privacy.html`, is served at `/privacy` and linked
+  from Settings. Fill in its operator/contact placeholders and use that URL in both store
+  listings.
+- Crash reporting: create a Sentry project, put its DSN in `EXPO_PUBLIC_SENTRY_DSN` in
+  `mobile/eas.json`. For readable stack traces, also add the `organization`/`project` options to
+  the `@sentry/react-native` plugin in `app.json`, store `SENTRY_AUTH_TOKEN` as an EAS secret, and
+  remove `SENTRY_DISABLE_AUTO_UPLOAD` from `eas.json`.
+- Set `EXPO_PUBLIC_FEEDBACK_EMAIL` in `mobile/eas.json` to show the "Send feedback" button.
 - Rewarded-video unlocks are enforced on the phone only; the server just guarantees the daily
   cap. If people start bypassing videos at scale, add AdMob server-side verification (SSV).
 - Swap the in-memory rate-limit `Map` in `dailyScanCap.ts` for Redis (or similar) once you're

@@ -178,7 +178,12 @@
     "adsSupported": "Leafkin은 작은 광고 몇 개로 무료로 운영돼요.",
     "aboutTitle": "앱 정보",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "식물 식별과 관리·건강·식용 관련 안내는 AI가 생성하며 가끔 틀릴 수 있어요. 이 앱만 믿고 야생 식물을 절대 먹지 마세요 — 반드시 먼저 지역 전문가에게 확인하세요."
+    "disclaimer": "식물 식별과 관리·건강·식용 관련 안내는 AI가 생성하며 가끔 틀릴 수 있어요. 이 앱만 믿고 야생 식물을 절대 먹지 마세요 — 반드시 먼저 지역 전문가에게 확인하세요.",
+    "feedbackTitle": "💬 피드백",
+    "feedbackBody": "버그를 발견했거나 아이디어가 있나요? 모든 메시지를 읽고 있어요.",
+    "feedbackButton": "피드백 보내기",
+    "feedbackNoMail": "이메일 앱을 찾을 수 없어요. {{email}}(으)로 보내 주세요.",
+    "privacyPolicy": "개인정보 처리방침"
   },
   "reminders": {
     "channel": "물주기 알림",

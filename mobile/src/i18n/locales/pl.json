@@ -205,7 +205,12 @@
     "adsSupported": "Leafkin jest darmowy dzięki kilku małym reklamom.",
     "aboutTitle": "O aplikacji",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "Identyfikacja roślin oraz wskazówki dotyczące pielęgnacji, zdrowia i jadalności są generowane przez AI i czasem mogą być błędne. Nigdy nie jedz dzikiej rośliny wyłącznie na podstawie tej aplikacji — zawsze najpierw potwierdź to u lokalnego eksperta."
+    "disclaimer": "Identyfikacja roślin oraz wskazówki dotyczące pielęgnacji, zdrowia i jadalności są generowane przez AI i czasem mogą być błędne. Nigdy nie jedz dzikiej rośliny wyłącznie na podstawie tej aplikacji — zawsze najpierw potwierdź to u lokalnego eksperta.",
+    "feedbackTitle": "💬 Opinie",
+    "feedbackBody": "Znalazłeś błąd albo masz pomysł? Czytamy każdą wiadomość.",
+    "feedbackButton": "Wyślij opinię",
+    "feedbackNoMail": "Nie znaleziono aplikacji pocztowej. Napisz na {{email}}.",
+    "privacyPolicy": "Polityka prywatności"
   },
   "reminders": {
     "channel": "Przypomnienia o podlewaniu",

@@ -187,7 +187,12 @@
     "adsSupported": "Leafkin ücretsizdir ve birkaç küçük reklamla desteklenir.",
     "aboutTitle": "Hakkında",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "Bitki tanımlama ile bakım, sağlık ve yenebilirlik önerileri yapay zekâ tarafından üretilir ve zaman zaman hatalı olabilir. Yabani bir bitkiyi asla yalnızca bu uygulamaya dayanarak yemeyin — her zaman önce yerel bir uzmana doğrulatın."
+    "disclaimer": "Bitki tanımlama ile bakım, sağlık ve yenebilirlik önerileri yapay zekâ tarafından üretilir ve zaman zaman hatalı olabilir. Yabani bir bitkiyi asla yalnızca bu uygulamaya dayanarak yemeyin — her zaman önce yerel bir uzmana doğrulatın.",
+    "feedbackTitle": "💬 Geri bildirim",
+    "feedbackBody": "Bir hata mı buldunuz, yoksa bir fikriniz mi var? Her mesajı okuyoruz.",
+    "feedbackButton": "Geri bildirim gönder",
+    "feedbackNoMail": "E-posta uygulaması bulunamadı. {{email}} adresine yazın.",
+    "privacyPolicy": "Gizlilik politikası"
   },
   "reminders": {
     "channel": "Sulama hatırlatıcıları",

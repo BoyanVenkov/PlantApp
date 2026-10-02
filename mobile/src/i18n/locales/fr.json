@@ -187,7 +187,12 @@
     "adsSupported": "Leafkin est gratuit, financé par quelques petites publicités.",
     "aboutTitle": "À propos",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "L’identification des plantes et les conseils d’entretien, de santé et de comestibilité sont générés par une IA et peuvent parfois être erronés. Ne mangez jamais une plante sauvage sur la seule base de cette app — faites toujours confirmer par un expert local."
+    "disclaimer": "L’identification des plantes et les conseils d’entretien, de santé et de comestibilité sont générés par une IA et peuvent parfois être erronés. Ne mangez jamais une plante sauvage sur la seule base de cette app — faites toujours confirmer par un expert local.",
+    "feedbackTitle": "💬 Vos retours",
+    "feedbackBody": "Un bug ou une idée ? Nous lisons chaque message.",
+    "feedbackButton": "Envoyer un retour",
+    "feedbackNoMail": "Aucune app de messagerie trouvée. Écrivez à {{email}}.",
+    "privacyPolicy": "Politique de confidentialité"
   },
   "reminders": {
     "channel": "Rappels d’arrosage",

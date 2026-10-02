@@ -187,7 +187,12 @@
     "adsSupported": "Leafkin is gratis, mogelijk gemaakt door een paar kleine advertenties.",
     "aboutTitle": "Over",
     "version": "Leafkin v{{version}}",
-    "disclaimer": "Plantherkenning en advies over verzorging, gezondheid en eetbaarheid worden door AI gegenereerd en kunnen soms fout zijn. Eet nooit een wilde plant alleen op basis van deze app — laat het altijd eerst bevestigen door een lokale expert."
+    "disclaimer": "Plantherkenning en advies over verzorging, gezondheid en eetbaarheid worden door AI gegenereerd en kunnen soms fout zijn. Eet nooit een wilde plant alleen op basis van deze app — laat het altijd eerst bevestigen door een lokale expert.",
+    "feedbackTitle": "💬 Feedback",
+    "feedbackBody": "Een bug gevonden of een idee? We lezen elk bericht.",
+    "feedbackButton": "Feedback sturen",
+    "feedbackNoMail": "Geen e-mailapp gevonden. Mail naar {{email}}.",
+    "privacyPolicy": "Privacybeleid"
   },
   "reminders": {
     "channel": "Waterherinneringen",

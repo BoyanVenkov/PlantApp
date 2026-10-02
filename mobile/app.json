@@ -5,11 +5,8 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "scheme": "leafkin",
-    "splash": {
-      "backgroundColor": "#0f5132"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -60,7 +57,17 @@
           "iosAppId": "ca-app-pub-3940256099942544~1458002511"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#0f5132"
+        }
+      ],
+      "@sentry/react-native"
     ]
   }
 }

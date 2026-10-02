@@ -14,6 +14,8 @@ import {
   setReminderHour,
 } from "@/services/reminders";
 import { DAILY_SCAN_CAP, FREE_SCANS_PER_DAY } from "@/services/usageLimiter";
+import { FEEDBACK_EMAIL, sendFeedback } from "@/services/feedback";
+import { API_BASE_URL } from "@/services/api";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { LanguageButton } from "@/components/LanguagePicker";
 
@@ -89,10 +91,24 @@ export default function Settings() {
           <Text className="text-base text-gray-600">{t("settings.adsSupported")}</Text>
         </Card>
 
+        {!!FEEDBACK_EMAIL && (
+          <Card title={t("settings.feedbackTitle")}>
+            <Text className="text-base text-gray-600 mb-3">{t("settings.feedbackBody")}</Text>
+            <PrimaryButton label={t("settings.feedbackButton")} variant="secondary" onPress={sendFeedback} />
+          </Card>
+        )}
+
         <Card title={t("settings.aboutTitle")}>
           <Text className="text-base text-gray-600">{t("settings.version", { version: Constants.expoConfig?.version })}</Text>
           <Text className="text-sm text-gray-500 mt-2">
             {t("settings.disclaimer")}
+          </Text>
+          <Text
+            onPress={() => Linking.openURL(`${API_BASE_URL}/privacy`)}
+            className="text-base font-semibold text-leaf-700 mt-3"
+            accessibilityRole="link"
+          >
+            {t("settings.privacyPolicy")} ›
           </Text>
         </Card>
       </ScrollView>
