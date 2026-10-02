@@ -7,7 +7,7 @@
     "base": {
       "env": {
         "EXPO_PUBLIC_API_BASE_URL": "https://REPLACE-WITH-YOUR-SERVER-URL",
-        "EXPO_PUBLIC_FEEDBACK_EMAIL": "",
+        "EXPO_PUBLIC_FEEDBACK_EMAIL": "boyan@venkovdigital.com",
         "EXPO_PUBLIC_SENTRY_DSN": "",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       }
