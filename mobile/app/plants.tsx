@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { AdBanner } from "@/components/AdBanner";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { WaterStatusPill } from "@/components/WaterStatusPill";
+import { PetBadge } from "@/components/PetBadge";
 import { listPlants } from "@/services/storage";
 import { markWatered } from "@/services/garden";
 import { daysUntilWater } from "@/services/watering";
@@ -69,7 +70,10 @@ export default function MyPlants() {
                 <Text className="text-sm italic text-leaf-600 mb-1.5" numberOfLines={1}>
                   {item.scientificName}
                 </Text>
-                <WaterStatusPill plant={item} />
+                <View className="flex-row flex-wrap gap-1.5">
+                  <WaterStatusPill plant={item} />
+                  <PetBadge safety={item.petSafety} warningsOnly />
+                </View>
               </View>
               {due && (
                 <Pressable onPress={() => water(item.id)} className="bg-sky-600 rounded-xl px-4 py-3 active:opacity-80">

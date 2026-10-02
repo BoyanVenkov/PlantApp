@@ -6,9 +6,27 @@ import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { WaterStatusPill } from "@/components/WaterStatusPill";
+import { PetBadge } from "@/components/PetBadge";
 import { getPlant, getScan } from "@/services/storage";
-import { markWatered, removeFromMyPlants, renamePlant, setWaterInterval } from "@/services/garden";
-import { daysSinceWatered, nextWaterDate, suggestedInterval } from "@/services/watering";
+import {
+  SNOOZE_DAYS,
+  markFertilized,
+  markWatered,
+  removeFromMyPlants,
+  renamePlant,
+  setFeedInterval,
+  setWaterInterval,
+  snoozeWatering,
+} from "@/services/garden";
+import {
+  daysSinceWatered,
+  daysUntilWater,
+  effectiveInterval,
+  nextFeedDate,
+  nextWaterDate,
+  suggestedInterval,
+} from "@/services/watering";
+import { isGrowingSeason } from "@/services/seasons";
 import { formatHour, getReminderHour, hasReminderPermission } from "@/services/reminders";
 import type { GardenPlant } from "@/types/plant";
 
@@ -26,6 +44,8 @@ export default function PlantDetail() {
   const [suggested, setSuggested] = useState<number | null>(null);
   const [reminderHour, setReminderHourState] = useState<number | null>(null);
   const [justWatered, setJustWatered] = useState(false);
+  const [justSnoozed, setJustSnoozed] = useState(false);
+  const [justFed, setJustFed] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -60,11 +80,31 @@ export default function PlantDetail() {
   }
 
   const since = daysSinceWatered(plant);
+  const now = new Date();
+  const winterInterval = effectiveInterval(plant, now);
+  const feedDay = nextFeedDate(plant);
 
   async function water() {
     const updated = await markWatered(plant!.id);
     if (updated) setPlant(updated);
     setJustWatered(true);
+  }
+
+  async function snooze() {
+    const updated = await snoozeWatering(plant!.id);
+    if (updated) setPlant(updated);
+    setJustSnoozed(true);
+  }
+
+  async function fertilize() {
+    const updated = await markFertilized(plant!.id);
+    if (updated) setPlant(updated);
+    setJustFed(true);
+  }
+
+  async function changeFeedInterval(days: number | null) {
+    const updated = await setFeedInterval(plant!.id, days);
+    if (updated) setPlant(updated);
   }
 
   async function changeInterval(delta: number) {
@@ -109,6 +149,9 @@ export default function PlantDetail() {
           accessibilityLabel={t("plant.nameLabel")}
         />
         <Text className="text-base italic text-leaf-600 mb-1">{plant.scientificName}</Text>
+        <View className="mb-2">
+          <PetBadge safety={plant.petSafety} />
+        </View>
         <Text className="text-xs text-gray-400 mb-4">{t("plant.renameHint")}</Text>
 
         {/* Watering */}
@@ -124,9 +167,28 @@ export default function PlantDetail() {
           <Text className="text-base text-gray-700 mb-1">
             {since === 0 ? t("plant.lastWateredToday") : t("plant.lastWatered", { count: since })}
           </Text>
+          {winterInterval !== plant.waterIntervalDays && (
+            <Text className="text-sm text-sky-800 bg-sky-50 rounded-xl px-3 py-2 my-1">
+              {t("plant.winterNote", {
+                days: t("common.days", { count: winterInterval }),
+                normal: t("common.days", { count: plant.waterIntervalDays }),
+              })}
+            </Text>
+          )}
           <Text className="text-sm text-gray-500 mb-4">{reminderHour !== null ? t("plant.reminderAt", { time: formatHour(reminderHour) }) : t("plant.remindersOff")}</Text>
 
           <PrimaryButton label={justWatered ? t("plant.wateredNice") : t("plant.iWatered")} onPress={water} disabled={justWatered} />
+          {/* Only when a reminder is actually due: postpone instead of fake-watering. */}
+          {(daysUntilWater(plant) <= 0 || justSnoozed) && !justWatered && (
+            <View className="mt-3">
+              <PrimaryButton
+                label={justSnoozed ? t("plant.snoozedNice", { count: SNOOZE_DAYS }) : t("plant.notYet")}
+                variant="secondary"
+                onPress={snooze}
+                disabled={justSnoozed}
+              />
+            </View>
+          )}
 
           <View className="flex-row items-center justify-between mt-5">
             <View className="flex-1">
@@ -140,6 +202,44 @@ export default function PlantDetail() {
           <Text className="text-sm text-gray-500 mt-2">
             {t("plant.intervalTip")}
           </Text>
+        </View>
+
+        {/* Fertilizing */}
+        <View className="bg-white rounded-3xl p-5 mb-4 border border-leaf-100">
+          <Text className="text-lg font-bold text-leaf-900 mb-3">{t("plant.fertilizing")}</Text>
+          {feedDay && plant.fertilizeIntervalDays ? (
+            <>
+              <Text className="text-base text-gray-700">
+                {t("plant.nextFeed")}
+                <Text className="font-bold">{formatDay(feedDay)}</Text>
+              </Text>
+              {!isGrowingSeason(now) && <Text className="text-sm text-gray-500 mt-1">{t("plant.restingUntilSpring")}</Text>}
+              <View className="mt-4">
+                <PrimaryButton
+                  label={justFed ? t("plant.fertilizedNice") : t("plant.iFertilized")}
+                  variant="secondary"
+                  onPress={fertilize}
+                  disabled={justFed}
+                />
+              </View>
+              <View className="flex-row items-center justify-between mt-5">
+                <Text className="text-base font-semibold text-leaf-900 flex-1">{t("plant.feedEvery")}</Text>
+                <Stepper
+                  label={t("common.days", { count: plant.fertilizeIntervalDays })}
+                  onMinus={() => changeFeedInterval(plant.fertilizeIntervalDays! - 7)}
+                  onPlus={() => changeFeedInterval(plant.fertilizeIntervalDays! + 7)}
+                />
+              </View>
+              <Pressable onPress={() => changeFeedInterval(null)} className="pt-4" hitSlop={6}>
+                <Text className="text-sm font-semibold text-gray-500">{t("plant.fertilizeTurnOff")}</Text>
+              </Pressable>
+            </>
+          ) : (
+            <>
+              <Text className="text-base text-gray-600 mb-3">{t("plant.fertilizeOff")}</Text>
+              <PrimaryButton label={t("plant.fertilizeTurnOn")} variant="secondary" onPress={() => changeFeedInterval(30)} />
+            </>
+          )}
         </View>
 
         {scanExists && plant.scanId && (

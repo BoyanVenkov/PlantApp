@@ -117,7 +117,22 @@
     "intervalTip": "Ziemia wciąż mokra w dniu przypomnienia? Dodaj dzień lub dwa. Szybko wysycha latem? Odejmij jeden dzień.",
     "fullGuide": "📖 Pełny poradnik i kontrola zdrowia",
     "newHealthScan": "📷 Nowa kontrola zdrowia",
-    "removeFromPlants": "Usuń z Moich roślin"
+    "removeFromPlants": "Usuń z Moich roślin",
+    "winterNote": "❄️ Tryb zimowy: {{days}} między podlewaniami (zwykle {{normal}})",
+    "notYet": "Jeszcze nie — ziemia jest wilgotna",
+    "snoozedNice_one": "⏰ Jasne — przypomnę za {{count}} dzień",
+    "snoozedNice_few": "⏰ Jasne — przypomnę za {{count}} dni",
+    "snoozedNice_many": "⏰ Jasne — przypomnę za {{count}} dni",
+    "snoozedNice_other": "⏰ Jasne — przypomnę za {{count}} dni",
+    "fertilizing": "🌱 Nawożenie",
+    "nextFeed": "Następne nawożenie: ",
+    "restingUntilSpring": "Zimowy odpoczynek — nawożenie wraca wiosną.",
+    "iFertilized": "🌱 Nawiozłem/am",
+    "fertilizedNice": "✓ Nawiezione — super!",
+    "feedEvery": "Nawoź co",
+    "fertilizeOff": "Przypomnienia o nawożeniu są wyłączone dla tej rośliny.",
+    "fertilizeTurnOn": "Włącz przypomnienia o nawożeniu",
+    "fertilizeTurnOff": "Wyłącz przypomnienia o nawożeniu"
   },
   "result": {
     "addedOffTitle": "Dodano — przypomnienia są wyłączone",
@@ -219,6 +234,20 @@
     "body_few": "Ostatnio podlana {{count}} dni temu. Stuknij, aby odhaczyć.",
     "body_many": "Ostatnio podlana {{count}} dni temu. Stuknij, aby odhaczyć.",
     "body_other": "Ostatnio podlana {{count}} dni temu. Stuknij, aby odhaczyć.",
-    "bodyNoDays": "Stuknij, aby odhaczyć."
+    "bodyNoDays": "Stuknij, aby odhaczyć.",
+    "feedTitle": "🌱 Czas nawieźć: {{name}}",
+    "feedBody": "To sezon wzrostu — trochę nawozu pomoże jej rosnąć. Stuknij, aby odhaczyć."
+  },
+  "pets": {
+    "toxic": "Toksyczna dla zwierząt",
+    "mildly_toxic": "Lekko toksyczna dla zwierząt",
+    "safe": "Bezpieczna dla zwierząt"
+  },
+  "share": {
+    "button": "Udostępnij",
+    "title": "Udostępnij tę roślinę",
+    "action": "Udostępnij obraz",
+    "identifiedWith": "Rozpoznano w Leafkin",
+    "failed": "Nie udało się udostępnić obrazu. Spróbuj ponownie."
   }
 }

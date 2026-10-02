@@ -102,7 +102,19 @@
     "intervalTip": "リマインダーの日に土がまだ湿っている？1〜2日延ばしましょう。夏に乾くのが早い？1日短くしましょう。",
     "fullGuide": "📖 育て方ガイドと健康チェック",
     "newHealthScan": "📷 新しく健康チェック",
-    "removeFromPlants": "マイプランツから削除"
+    "removeFromPlants": "マイプランツから削除",
+    "winterNote": "❄️ 冬モード：水やりの間隔は{{days}}（通常は{{normal}}）",
+    "notYet": "まだ大丈夫 — 土が湿っている",
+    "snoozedNice_other": "⏰ OK — {{count}}日後にお知らせします",
+    "fertilizing": "🌱 肥料",
+    "nextFeed": "次の肥料：",
+    "restingUntilSpring": "冬の休眠期 — 肥料は春から再開します。",
+    "iFertilized": "🌱 肥料をあげた",
+    "fertilizedNice": "✓ 肥料完了 — えらい！",
+    "feedEvery": "肥料の間隔",
+    "fertilizeOff": "この植物の肥料リマインダーはオフです。",
+    "fertilizeTurnOn": "肥料リマインダーをオンにする",
+    "fertilizeTurnOff": "肥料リマインダーをオフにする"
   },
   "result": {
     "addedOffTitle": "追加しました — リマインダーはオフです",
@@ -189,6 +201,20 @@
     "channel": "水やりリマインダー",
     "title": "💧 {{name}}の水やりの時間です",
     "body_other": "前回の水やりは{{count}}日前です。タップして完了にしましょう。",
-    "bodyNoDays": "タップして完了にしましょう。"
+    "bodyNoDays": "タップして完了にしましょう。",
+    "feedTitle": "🌱 {{name}}に肥料をあげる時間です",
+    "feedBody": "成長期です — 肥料で元気に育ちます。タップして完了にしましょう。"
+  },
+  "pets": {
+    "toxic": "ペットに有毒",
+    "mildly_toxic": "ペットにやや有毒",
+    "safe": "ペットに安全"
+  },
+  "share": {
+    "button": "シェア",
+    "title": "この植物をシェア",
+    "action": "画像をシェア",
+    "identifiedWith": "Leafkinで識別",
+    "failed": "画像をシェアできませんでした。もう一度お試しください。"
   }
 }

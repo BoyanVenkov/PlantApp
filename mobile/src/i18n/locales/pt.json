@@ -107,7 +107,20 @@
     "intervalTip": "A terra ainda está úmida no dia do lembrete? Adicione um ou dois dias. Seca rápido no verão? Tire um dia.",
     "fullGuide": "📖 Guia completo de cuidados e saúde",
     "newHealthScan": "📷 Nova checagem de saúde",
-    "removeFromPlants": "Remover de Minhas plantas"
+    "removeFromPlants": "Remover de Minhas plantas",
+    "winterNote": "❄️ Modo inverno: {{days}} entre regas (normalmente {{normal}})",
+    "notYet": "Ainda não — a terra está úmida",
+    "snoozedNice_one": "⏰ Certo — lembro você em {{count}} dia",
+    "snoozedNice_other": "⏰ Certo — lembro você em {{count}} dias",
+    "fertilizing": "🌱 Adubação",
+    "nextFeed": "Próxima adubação: ",
+    "restingUntilSpring": "Descansando no inverno — a adubação volta na primavera.",
+    "iFertilized": "🌱 Eu adubei",
+    "fertilizedNice": "✓ Adubada — boa!",
+    "feedEvery": "Adubar a cada",
+    "fertilizeOff": "Os lembretes de adubação estão desativados para esta planta.",
+    "fertilizeTurnOn": "Ativar lembretes de adubação",
+    "fertilizeTurnOff": "Desativar lembretes de adubação"
   },
   "result": {
     "addedOffTitle": "Adicionada — lembretes desativados",
@@ -199,6 +212,20 @@
     "title": "💧 Hora de regar: {{name}}",
     "body_one": "Última rega há {{count}} dia. Toque para marcar como feito.",
     "body_other": "Última rega há {{count}} dias. Toque para marcar como feito.",
-    "bodyNoDays": "Toque para marcar como feito."
+    "bodyNoDays": "Toque para marcar como feito.",
+    "feedTitle": "🌱 Hora de adubar: {{name}}",
+    "feedBody": "É época de crescimento — um pouco de adubo ajuda a planta a se desenvolver. Toque para marcar como feito."
+  },
+  "pets": {
+    "toxic": "Tóxica para pets",
+    "mildly_toxic": "Levemente tóxica para pets",
+    "safe": "Segura para pets"
+  },
+  "share": {
+    "button": "Compartilhar",
+    "title": "Compartilhar esta planta",
+    "action": "Compartilhar imagem",
+    "identifiedWith": "Identificada com o Leafkin",
+    "failed": "Não foi possível compartilhar a imagem. Tente de novo."
   }
 }

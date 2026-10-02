@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "@/i18n";
 import type { GardenPlant } from "@/types/plant";
 import { listPlants } from "./storage";
-import { daysSinceWatered, nextWaterDate } from "./watering";
+import { daysSinceWatered, nextFeedDate, nextWaterDate } from "./watering";
 
 const HOUR_KEY = "plantapp.reminder_hour";
 const DEFAULT_HOUR = 9;
@@ -56,8 +56,12 @@ export async function ensureReminderPermission(): Promise<boolean> {
   return granted;
 }
 
-function identifierFor(plantId: string) {
+function waterId(plantId: string) {
   return `water-${plantId}`;
+}
+
+function feedId(plantId: string) {
+  return `feed-${plantId}`;
 }
 
 /**
@@ -65,8 +69,8 @@ function identifierFor(plantId: string) {
  * already passed (overdue, or due today but after the hour), it nudges at the
  * next reminder hour instead — never in the middle of the night.
  */
-function reminderDate(plant: GardenPlant, hour: number): Date {
-  const due = nextWaterDate(plant);
+function reminderDate(dueDay: Date, hour: number): Date {
+  const due = new Date(dueDay);
   due.setHours(hour, 0, 0, 0);
 
   const now = new Date();
@@ -81,7 +85,7 @@ function reminderDate(plant: GardenPlant, hour: number): Date {
 async function scheduleOne(plant: GardenPlant, hour: number) {
   const days = daysSinceWatered(plant);
   await Notifications.scheduleNotificationAsync({
-    identifier: identifierFor(plant.id),
+    identifier: waterId(plant.id),
     content: {
       title: i18n.t("reminders.title", { name: plant.name }),
       body: days > 0 ? i18n.t("reminders.body", { count: days }) : i18n.t("reminders.bodyNoDays"),
@@ -89,7 +93,23 @@ async function scheduleOne(plant: GardenPlant, hour: number) {
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
-      date: reminderDate(plant, hour),
+      date: reminderDate(nextWaterDate(plant), hour),
+      channelId: CHANNEL_ID,
+    },
+  });
+
+  const feedDay = nextFeedDate(plant);
+  if (!feedDay) return;
+  await Notifications.scheduleNotificationAsync({
+    identifier: feedId(plant.id),
+    content: {
+      title: i18n.t("reminders.feedTitle", { name: plant.name }),
+      body: i18n.t("reminders.feedBody"),
+      data: { url: `/plant/${plant.id}` },
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: reminderDate(feedDay, hour),
       channelId: CHANNEL_ID,
     },
   });
@@ -102,7 +122,8 @@ export async function scheduleReminder(plant: GardenPlant) {
 }
 
 export async function cancelReminder(plantId: string) {
-  await Notifications.cancelScheduledNotificationAsync(identifierFor(plantId)).catch(() => {});
+  await Notifications.cancelScheduledNotificationAsync(waterId(plantId)).catch(() => {});
+  await Notifications.cancelScheduledNotificationAsync(feedId(plantId)).catch(() => {});
 }
 
 /** Source of truth is the plants table; this rebuilds every reminder from it. */

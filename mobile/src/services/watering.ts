@@ -1,7 +1,14 @@
 import i18n from "@/i18n";
 import type { GardenPlant } from "@/types/plant";
+import { isGrowingSeason, isWinter } from "./seasons";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Gemini's interval is for the growing season. Resting plants in winter use
+ * far less water, and overwatering is what kills most houseplants.
+ */
+const WINTER_FACTOR = 1.5;
 
 function startOfDay(date: Date): Date {
   const d = new Date(date);
@@ -9,11 +16,46 @@ function startOfDay(date: Date): Date {
   return d;
 }
 
-/** The calendar day the plant is next due (local midnight). */
+/** Days between waterings for a cycle starting on `from`: stretched in winter. */
+export function effectiveInterval(plant: GardenPlant, from = new Date(plant.lastWateredAt)): number {
+  return isWinter(from) ? Math.ceil(plant.waterIntervalDays * WINTER_FACTOR) : plant.waterIntervalDays;
+}
+
+/** The calendar day the plant is next due (local midnight). A snooze can only push it later. */
 export function nextWaterDate(plant: GardenPlant): Date {
   const d = startOfDay(new Date(plant.lastWateredAt));
-  d.setDate(d.getDate() + plant.waterIntervalDays);
+  d.setDate(d.getDate() + effectiveInterval(plant));
+  if (plant.snoozedUntil) {
+    const snoozed = startOfDay(new Date(plant.snoozedUntil));
+    if (snoozed > d) return snoozed;
+  }
   return d;
+}
+
+/** `days` from today, as the ISO timestamp a snooze is stored as. */
+export function daysFromToday(days: number): string {
+  const d = startOfDay(new Date());
+  d.setDate(d.getDate() + days);
+  return d.toISOString();
+}
+
+/**
+ * Next feeding day, or null when fertilizing reminders are off. A date that
+ * falls outside the growing season waits for spring instead.
+ */
+export function nextFeedDate(plant: GardenPlant): Date | null {
+  if (!plant.fertilizeIntervalDays) return null;
+  const d = startOfDay(new Date(plant.lastFertilizedAt ?? plant.createdAt));
+  d.setDate(d.getDate() + plant.fertilizeIntervalDays);
+  for (let i = 0; i < 12 && !isGrowingSeason(d); i++) d.setMonth(d.getMonth() + 1, 1);
+  return d;
+}
+
+/** null for plants that shouldn't be fed; 30 days when an older scan didn't say. */
+export function suggestedFeedInterval(days: number | undefined): number | null {
+  if (days === 0) return null;
+  if (!days || !Number.isFinite(days)) return 30;
+  return Math.min(90, Math.max(7, Math.round(days)));
 }
 
 /** Whole days until due: 0 = today, negative = overdue. */

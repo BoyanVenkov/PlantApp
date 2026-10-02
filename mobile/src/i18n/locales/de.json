@@ -107,7 +107,20 @@
     "intervalTip": "Erde am Erinnerungstag noch feucht? Ein, zwei Tage dazugeben. Trocknet sie im Sommer schnell aus? Einen Tag abziehen.",
     "fullGuide": "📖 Pflegeanleitung & Gesundheitscheck",
     "newHealthScan": "📷 Neuer Gesundheitscheck",
-    "removeFromPlants": "Aus Meine Pflanzen entfernen"
+    "removeFromPlants": "Aus Meine Pflanzen entfernen",
+    "winterNote": "❄️ Wintermodus: {{days}} zwischen dem Gießen (sonst {{normal}})",
+    "notYet": "Noch nicht — die Erde ist noch feucht",
+    "snoozedNice_one": "⏰ Alles klar — Erinnerung in {{count}} Tag",
+    "snoozedNice_other": "⏰ Alles klar — Erinnerung in {{count}} Tagen",
+    "fertilizing": "🌱 Düngen",
+    "nextFeed": "Nächstes Düngen: ",
+    "restingUntilSpring": "Winterruhe — gedüngt wird wieder im Frühling.",
+    "iFertilized": "🌱 Ich habe gedüngt",
+    "fertilizedNice": "✓ Gedüngt — super!",
+    "feedEvery": "Düngen alle",
+    "fertilizeOff": "Dünge-Erinnerungen sind für diese Pflanze aus.",
+    "fertilizeTurnOn": "Dünge-Erinnerungen einschalten",
+    "fertilizeTurnOff": "Dünge-Erinnerungen ausschalten"
   },
   "result": {
     "addedOffTitle": "Hinzugefügt — Erinnerungen sind aus",
@@ -199,6 +212,20 @@
     "title": "💧 Zeit, {{name}} zu gießen",
     "body_one": "Zuletzt vor {{count}} Tag gegossen. Tippe, um es abzuhaken.",
     "body_other": "Zuletzt vor {{count}} Tagen gegossen. Tippe, um es abzuhaken.",
-    "bodyNoDays": "Tippe, um es abzuhaken."
+    "bodyNoDays": "Tippe, um es abzuhaken.",
+    "feedTitle": "🌱 Zeit, {{name}} zu düngen",
+    "feedBody": "Es ist Wachstumszeit — etwas Dünger hält sie in Form. Tippe, um es abzuhaken."
+  },
+  "pets": {
+    "toxic": "Giftig für Haustiere",
+    "mildly_toxic": "Leicht giftig für Haustiere",
+    "safe": "Haustierfreundlich"
+  },
+  "share": {
+    "button": "Teilen",
+    "title": "Diese Pflanze teilen",
+    "action": "Bild teilen",
+    "identifiedWith": "Bestimmt mit Leafkin",
+    "failed": "Das Bild konnte nicht geteilt werden. Bitte versuch es noch einmal."
   }
 }

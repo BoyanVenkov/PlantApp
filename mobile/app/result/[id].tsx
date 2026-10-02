@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { View, Text, Image, ScrollView, ActivityIndicator, Alert, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { getPlantByScanId, getScan } from "@/services/storage";
 import { addScanToMyPlants, type LastWatered } from "@/services/garden";
@@ -9,6 +9,8 @@ import { suggestedInterval } from "@/services/watering";
 import type { GardenPlant, ScanRecord } from "@/types/plant";
 import { SectionCard, Field } from "@/components/SectionCard";
 import { HealthBadge } from "@/components/HealthBadge";
+import { PetBadge } from "@/components/PetBadge";
+import { ShareResultButton } from "@/components/ShareResultButton";
 import { NativeAdCard } from "@/components/NativeAdCard";
 import { PrimaryButton } from "@/components/PrimaryButton";
 
@@ -81,6 +83,7 @@ export default function Result() {
 
   return (
     <SafeAreaView className="flex-1 bg-leaf-50" edges={["bottom"]}>
+      <Stack.Screen options={{ headerRight: () => <ShareResultButton scan={scan} /> }} />
       <ScrollView className="flex-1" contentContainerStyle={{ padding: 16, paddingBottom: 24 }}>
         <Image source={{ uri: imageUris[0] }} className="w-full h-56 rounded-2xl bg-leaf-100 mb-4" />
 
@@ -95,8 +98,9 @@ export default function Result() {
           </View>
         )}
 
-        <View className="mb-4">
+        <View className="flex-row flex-wrap gap-2 mb-4">
           <HealthBadge status={health.status} />
+          <PetBadge safety={care.petSafety} />
         </View>
 
         {plant ? (

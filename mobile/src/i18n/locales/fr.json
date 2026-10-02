@@ -107,7 +107,20 @@
     "intervalTip": "Terre encore humide le jour du rappel ? Ajoutez un ou deux jours. Elle sèche vite en été ? Enlevez-en un.",
     "fullGuide": "📖 Guide d’entretien et bilan de santé",
     "newHealthScan": "📷 Nouveau bilan de santé",
-    "removeFromPlants": "Retirer de Mes plantes"
+    "removeFromPlants": "Retirer de Mes plantes",
+    "winterNote": "❄️ Mode hiver : {{days}} entre deux arrosages (normalement {{normal}})",
+    "notYet": "Pas encore — la terre est encore humide",
+    "snoozedNice_one": "⏰ D’accord — rappel dans {{count}} jour",
+    "snoozedNice_other": "⏰ D’accord — rappel dans {{count}} jours",
+    "fertilizing": "🌱 Engrais",
+    "nextFeed": "Prochain apport : ",
+    "restingUntilSpring": "Repos hivernal — l’engrais reprend au printemps.",
+    "iFertilized": "🌱 J’ai mis de l’engrais",
+    "fertilizedNice": "✓ Nourrie — bravo !",
+    "feedEvery": "Engrais tous les",
+    "fertilizeOff": "Les rappels d’engrais sont désactivés pour cette plante.",
+    "fertilizeTurnOn": "Activer les rappels d’engrais",
+    "fertilizeTurnOff": "Désactiver les rappels d’engrais"
   },
   "result": {
     "addedOffTitle": "Ajoutée — rappels désactivés",
@@ -199,6 +212,20 @@
     "title": "💧 C’est l’heure d’arroser : {{name}}",
     "body_one": "Dernier arrosage il y a {{count}} jour. Touchez pour le noter.",
     "body_other": "Dernier arrosage il y a {{count}} jours. Touchez pour le noter.",
-    "bodyNoDays": "Touchez pour le noter."
+    "bodyNoDays": "Touchez pour le noter.",
+    "feedTitle": "🌱 C’est l’heure de nourrir : {{name}}",
+    "feedBody": "C’est la saison de croissance — un peu d’engrais l’aide à pousser. Touchez pour le noter."
+  },
+  "pets": {
+    "toxic": "Toxique pour les animaux",
+    "mildly_toxic": "Légèrement toxique pour les animaux",
+    "safe": "Sans danger pour les animaux"
+  },
+  "share": {
+    "button": "Partager",
+    "title": "Partager cette plante",
+    "action": "Partager l’image",
+    "identifiedWith": "Identifiée avec Leafkin",
+    "failed": "Impossible de partager l’image. Réessayez."
   }
 }

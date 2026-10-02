@@ -107,7 +107,20 @@
     "intervalTip": "Grond nog nat op de herinneringsdag? Tel er een dag of twee bij op. Droogt hij in de zomer snel uit? Haal er een dag af.",
     "fullGuide": "📖 Volledige verzorgingsgids & gezondheidscheck",
     "newHealthScan": "📷 Nieuwe gezondheidscheck",
-    "removeFromPlants": "Verwijderen uit Mijn planten"
+    "removeFromPlants": "Verwijderen uit Mijn planten",
+    "winterNote": "❄️ Wintermodus: {{days}} tussen het water geven (normaal {{normal}})",
+    "notYet": "Nog niet — de grond is nog nat",
+    "snoozedNice_one": "⏰ Oké — herinnering over {{count}} dag",
+    "snoozedNice_other": "⏰ Oké — herinnering over {{count}} dagen",
+    "fertilizing": "🌱 Voeding",
+    "nextFeed": "Volgende voeding: ",
+    "restingUntilSpring": "Winterrust — in de lente krijgt hij weer voeding.",
+    "iFertilized": "🌱 Ik heb gevoed",
+    "fertilizedNice": "✓ Gevoed — top!",
+    "feedEvery": "Voeden elke",
+    "fertilizeOff": "Voedingsherinneringen staan uit voor deze plant.",
+    "fertilizeTurnOn": "Voedingsherinneringen aanzetten",
+    "fertilizeTurnOff": "Voedingsherinneringen uitzetten"
   },
   "result": {
     "addedOffTitle": "Toegevoegd — herinneringen staan uit",
@@ -199,6 +212,20 @@
     "title": "💧 Tijd om {{name}} water te geven",
     "body_one": "{{count}} dag geleden water gegeven. Tik om af te vinken.",
     "body_other": "{{count}} dagen geleden water gegeven. Tik om af te vinken.",
-    "bodyNoDays": "Tik om af te vinken."
+    "bodyNoDays": "Tik om af te vinken.",
+    "feedTitle": "🌱 Tijd om {{name}} te voeden",
+    "feedBody": "Het is groeiseizoen — wat plantenvoeding houdt hem sterk. Tik om af te vinken."
+  },
+  "pets": {
+    "toxic": "Giftig voor huisdieren",
+    "mildly_toxic": "Licht giftig voor huisdieren",
+    "safe": "Veilig voor huisdieren"
+  },
+  "share": {
+    "button": "Delen",
+    "title": "Deze plant delen",
+    "action": "Afbeelding delen",
+    "identifiedWith": "Herkend met Leafkin",
+    "failed": "Delen van de afbeelding is mislukt. Probeer het opnieuw."
   }
 }

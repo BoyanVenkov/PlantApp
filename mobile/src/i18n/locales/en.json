@@ -107,7 +107,20 @@
     "intervalTip": "Soil still wet on reminder day? Add a day or two. Drying out fast in summer? Take a day off.",
     "fullGuide": "📖 Full care guide & health check",
     "newHealthScan": "📷 New health check scan",
-    "removeFromPlants": "Remove from My Plants"
+    "removeFromPlants": "Remove from My Plants",
+    "winterNote": "❄️ Winter mode: {{days}} between waterings (normally {{normal}})",
+    "notYet": "Not yet — soil's still wet",
+    "snoozedNice_one": "⏰ Got it — I'll remind you in {{count}} day",
+    "snoozedNice_other": "⏰ Got it — I'll remind you in {{count}} days",
+    "fertilizing": "🌱 Fertilizing",
+    "nextFeed": "Next feed: ",
+    "restingUntilSpring": "Resting for winter — feeding starts again in spring.",
+    "iFertilized": "🌱 I fertilized it",
+    "fertilizedNice": "✓ Fed — nice!",
+    "feedEvery": "Feed every",
+    "fertilizeOff": "Fertilizing reminders are off for this plant.",
+    "fertilizeTurnOn": "Turn on fertilizing reminders",
+    "fertilizeTurnOff": "Turn off fertilizing reminders"
   },
   "result": {
     "addedOffTitle": "Added — reminders are off",
@@ -199,6 +212,20 @@
     "title": "💧 Time to water your {{name}}",
     "body_one": "Last watered {{count}} day ago. Tap to mark it done.",
     "body_other": "Last watered {{count}} days ago. Tap to mark it done.",
-    "bodyNoDays": "Tap to mark it done."
+    "bodyNoDays": "Tap to mark it done.",
+    "feedTitle": "🌱 Time to feed your {{name}}",
+    "feedBody": "It's growing season — a dose of fertilizer keeps it thriving. Tap to mark it done."
+  },
+  "pets": {
+    "toxic": "Toxic to pets",
+    "mildly_toxic": "Mildly toxic to pets",
+    "safe": "Pet-safe"
+  },
+  "share": {
+    "button": "Share",
+    "title": "Share this plant",
+    "action": "Share image",
+    "identifiedWith": "Identified with Leafkin",
+    "failed": "Couldn't share the image. Please try again."
   }
 }

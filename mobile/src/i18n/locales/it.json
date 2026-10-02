@@ -107,7 +107,20 @@
     "intervalTip": "Terreno ancora umido il giorno del promemoria? Aggiungi un giorno o due. Si asciuga in fretta d’estate? Togline uno.",
     "fullGuide": "📖 Guida completa e controllo salute",
     "newHealthScan": "📷 Nuovo controllo della salute",
-    "removeFromPlants": "Rimuovi da Le mie piante"
+    "removeFromPlants": "Rimuovi da Le mie piante",
+    "winterNote": "❄️ Modalità inverno: {{days}} tra un’annaffiatura e l’altra (di solito {{normal}})",
+    "notYet": "Non ancora — il terreno è ancora umido",
+    "snoozedNice_one": "⏰ Va bene — te lo ricordo tra {{count}} giorno",
+    "snoozedNice_other": "⏰ Va bene — te lo ricordo tra {{count}} giorni",
+    "fertilizing": "🌱 Concimazione",
+    "nextFeed": "Prossima concimazione: ",
+    "restingUntilSpring": "Riposo invernale — si concima di nuovo in primavera.",
+    "iFertilized": "🌱 L’ho concimata",
+    "fertilizedNice": "✓ Concimata — ottimo!",
+    "feedEvery": "Concima ogni",
+    "fertilizeOff": "I promemoria di concimazione sono disattivati per questa pianta.",
+    "fertilizeTurnOn": "Attiva i promemoria di concimazione",
+    "fertilizeTurnOff": "Disattiva i promemoria di concimazione"
   },
   "result": {
     "addedOffTitle": "Aggiunta — promemoria disattivati",
@@ -199,6 +212,20 @@
     "title": "💧 È ora di annaffiare: {{name}}",
     "body_one": "Ultima annaffiatura {{count}} giorno fa. Tocca per segnarla come fatta.",
     "body_other": "Ultima annaffiatura {{count}} giorni fa. Tocca per segnarla come fatta.",
-    "bodyNoDays": "Tocca per segnarla come fatta."
+    "bodyNoDays": "Tocca per segnarla come fatta.",
+    "feedTitle": "🌱 È ora di concimare: {{name}}",
+    "feedBody": "È la stagione di crescita — un po’ di concime la aiuta. Tocca per segnarla come fatta."
+  },
+  "pets": {
+    "toxic": "Tossica per animali",
+    "mildly_toxic": "Lievemente tossica per animali",
+    "safe": "Sicura per animali"
+  },
+  "share": {
+    "button": "Condividi",
+    "title": "Condividi questa pianta",
+    "action": "Condividi immagine",
+    "identifiedWith": "Identificata con Leafkin",
+    "failed": "Impossibile condividere l’immagine. Riprova."
   }
 }

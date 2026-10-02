@@ -20,6 +20,15 @@ async function readList<T>(key: string): Promise<T[]> {
   return raw ? (JSON.parse(raw) as T[]) : [];
 }
 
+/** Plants saved before newer fields existed get the same defaults as the SQLite migration. */
+function withDefaults(p: Partial<GardenPlant>): GardenPlant {
+  return { snoozedUntil: null, petSafety: null, fertilizeIntervalDays: null, lastFertilizedAt: null, ...p } as GardenPlant;
+}
+
+async function readPlants(): Promise<GardenPlant[]> {
+  return (await readList<Partial<GardenPlant>>(PLANTS_KEY)).map(withDefaults);
+}
+
 async function writeList<T>(key: string, list: T[]): Promise<void> {
   await AsyncStorage.setItem(key, JSON.stringify(list));
 }
@@ -54,29 +63,37 @@ export async function deleteScan(id: string): Promise<void> {
 
 // ── My Plants ──────────────────────────────────────────────────────────────
 
+export type PlantChange =
+  | "name"
+  | "waterIntervalDays"
+  | "lastWateredAt"
+  | "snoozedUntil"
+  | "fertilizeIntervalDays"
+  | "lastFertilizedAt";
+
 export async function addPlant(input: Omit<GardenPlant, "id" | "createdAt">): Promise<GardenPlant> {
   const plant: GardenPlant = { ...input, id: newId(), createdAt: new Date().toISOString() };
-  await writeList(PLANTS_KEY, [...(await readList<GardenPlant>(PLANTS_KEY)), plant]);
+  await writeList(PLANTS_KEY, [...(await readPlants()), plant]);
   return plant;
 }
 
 export async function getPlant(id: string): Promise<GardenPlant | null> {
-  return (await readList<GardenPlant>(PLANTS_KEY)).find((p) => p.id === id) ?? null;
+  return (await readPlants()).find((p) => p.id === id) ?? null;
 }
 
 export async function getPlantByScanId(scanId: string): Promise<GardenPlant | null> {
-  return (await readList<GardenPlant>(PLANTS_KEY)).find((p) => p.scanId === scanId) ?? null;
+  return (await readPlants()).find((p) => p.scanId === scanId) ?? null;
 }
 
 export async function listPlants(): Promise<GardenPlant[]> {
-  return (await readList<GardenPlant>(PLANTS_KEY)).sort(newestFirst);
+  return (await readPlants()).sort(newestFirst);
 }
 
 export async function updatePlant(
   id: string,
-  changes: Partial<Pick<GardenPlant, "name" | "waterIntervalDays" | "lastWateredAt">>
+  changes: Partial<Pick<GardenPlant, PlantChange>>
 ): Promise<GardenPlant | null> {
-  const plants = await readList<GardenPlant>(PLANTS_KEY);
+  const plants = await readPlants();
   const index = plants.findIndex((p) => p.id === id);
   if (index === -1) return null;
   plants[index] = { ...plants[index], ...changes };
@@ -85,5 +102,5 @@ export async function updatePlant(
 }
 
 export async function deletePlant(id: string): Promise<void> {
-  await writeList(PLANTS_KEY, (await readList<GardenPlant>(PLANTS_KEY)).filter((p) => p.id !== id));
+  await writeList(PLANTS_KEY, (await readPlants()).filter((p) => p.id !== id));
 }

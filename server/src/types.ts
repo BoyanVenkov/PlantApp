@@ -31,6 +31,10 @@ export interface PlantAnalysis {
     pruning: string;
     propagation: string;
     petToxicity: string;
+    /** For cats and dogs. Drives the 🐾 badge; petToxicity has the details. */
+    petSafety: "toxic" | "mildly_toxic" | "safe" | "unknown";
+    /** Days between feedings in the growing season; 0 = shouldn't be fed regularly. */
+    fertilizeIntervalDays: number;
   };
 
   health: {

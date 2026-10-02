@@ -85,6 +85,8 @@ const responseSchema = {
         pruning: { type: Type.STRING },
         propagation: { type: Type.STRING },
         petToxicity: { type: Type.STRING },
+        petSafety: { type: Type.STRING, enum: ["toxic", "mildly_toxic", "safe", "unknown"] },
+        fertilizeIntervalDays: { type: Type.INTEGER },
       },
       required: [
         "light",
@@ -96,6 +98,8 @@ const responseSchema = {
         "pruning",
         "propagation",
         "petToxicity",
+        "petSafety",
+        "fertilizeIntervalDays",
       ],
     },
     health: {
@@ -162,7 +166,11 @@ Rules:
    reminders, so give a single realistic integer (e.g. 7), never 0.
 8. Never break character, never mention that you are an AI model, and never include markdown or
    commentary outside the JSON.
-9. Write every human-readable text field (names, descriptions, lists, rejectionReason, disclaimer)
+9. care.petSafety is about cats and dogs: "toxic", "mildly_toxic" (e.g. only stomach upset),
+   "safe", or "unknown" when you aren't confident. Never guess "safe". care.fertilizeIntervalDays
+   is the typical number of days between feedings in the growing season (e.g. 14 or 30), or 0 for
+   plants that shouldn't be fed regularly (e.g. carnivorous plants).
+10. Write every human-readable text field (names, descriptions, lists, rejectionReason, disclaimer)
    in the language the user message asks for. commonName is the name people use for this plant in
    that language. scientificName stays in Latin, and enum fields keep their exact English values.`;
 

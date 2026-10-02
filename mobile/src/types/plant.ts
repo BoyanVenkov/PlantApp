@@ -29,6 +29,10 @@ export interface PlantAnalysis {
     pruning: string;
     propagation: string;
     petToxicity: string;
+    /** Missing on scans made before the pet badge existed. */
+    petSafety?: PetSafety;
+    /** Days between feedings in the growing season; 0 = shouldn't be fed. Missing on older scans. */
+    fertilizeIntervalDays?: number;
   };
 
   health: {
@@ -48,6 +52,8 @@ export interface PlantAnalysis {
   };
 }
 
+export type PetSafety = "toxic" | "mildly_toxic" | "safe" | "unknown";
+
 /** A saved scan, i.e. a PlantAnalysis plus the local bookkeeping around it. */
 export interface ScanRecord {
   id: string;
@@ -66,5 +72,11 @@ export interface GardenPlant {
   imageUri: string;
   waterIntervalDays: number;
   lastWateredAt: string; // ISO timestamp
+  /** "Not yet, soil's still wet": no watering due before this day. Cleared on watering. */
+  snoozedUntil: string | null;
+  petSafety: PetSafety | null;
+  /** null = no fertilizing reminders for this plant. */
+  fertilizeIntervalDays: number | null;
+  lastFertilizedAt: string | null;
   createdAt: string; // ISO timestamp
 }

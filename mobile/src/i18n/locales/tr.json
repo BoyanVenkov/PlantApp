@@ -107,7 +107,20 @@
     "intervalTip": "Hatırlatma günü toprak hâlâ ıslak mı? Bir iki gün ekleyin. Yazın çabuk mu kuruyor? Bir gün azaltın.",
     "fullGuide": "📖 Tam bakım rehberi ve sağlık kontrolü",
     "newHealthScan": "📷 Yeni sağlık kontrolü taraması",
-    "removeFromPlants": "Bitkilerim’den kaldır"
+    "removeFromPlants": "Bitkilerim’den kaldır",
+    "winterNote": "❄️ Kış modu: sulamalar arası {{days}} (normalde {{normal}})",
+    "notYet": "Henüz değil — toprak hâlâ nemli",
+    "snoozedNice_one": "⏰ Tamam — {{count}} gün sonra hatırlatacağım",
+    "snoozedNice_other": "⏰ Tamam — {{count}} gün sonra hatırlatacağım",
+    "fertilizing": "🌱 Gübreleme",
+    "nextFeed": "Sonraki gübreleme: ",
+    "restingUntilSpring": "Kış dinlenmesi — gübreleme ilkbaharda yeniden başlar.",
+    "iFertilized": "🌱 Gübreledim",
+    "fertilizedNice": "✓ Gübrelendi — harika!",
+    "feedEvery": "Gübreleme sıklığı",
+    "fertilizeOff": "Bu bitki için gübreleme hatırlatıcıları kapalı.",
+    "fertilizeTurnOn": "Gübreleme hatırlatıcılarını aç",
+    "fertilizeTurnOff": "Gübreleme hatırlatıcılarını kapat"
   },
   "result": {
     "addedOffTitle": "Eklendi — hatırlatıcılar kapalı",
@@ -199,6 +212,20 @@
     "title": "💧 {{name}} sulama zamanı",
     "body_one": "Son sulama {{count}} gün önce. İşaretlemek için dokunun.",
     "body_other": "Son sulama {{count}} gün önce. İşaretlemek için dokunun.",
-    "bodyNoDays": "İşaretlemek için dokunun."
+    "bodyNoDays": "İşaretlemek için dokunun.",
+    "feedTitle": "🌱 {{name}} gübreleme zamanı",
+    "feedBody": "Büyüme mevsimi — biraz gübre gelişmesine yardım eder. İşaretlemek için dokunun."
+  },
+  "pets": {
+    "toxic": "Evcil hayvanlar için zehirli",
+    "mildly_toxic": "Evcil hayvanlar için hafif zehirli",
+    "safe": "Evcil hayvanlar için güvenli"
+  },
+  "share": {
+    "button": "Paylaş",
+    "title": "Bu bitkiyi paylaş",
+    "action": "Görseli paylaş",
+    "identifiedWith": "Leafkin ile tanımlandı",
+    "failed": "Görsel paylaşılamadı. Lütfen tekrar deneyin."
   }
 }

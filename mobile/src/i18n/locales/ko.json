@@ -102,7 +102,19 @@
     "intervalTip": "알림 날에도 흙이 아직 축축한가요? 하루나 이틀 늘려 보세요. 여름에 빨리 마르나요? 하루 줄여 보세요.",
     "fullGuide": "📖 전체 관리 가이드 & 건강 체크",
     "newHealthScan": "📷 새 건강 체크 스캔",
-    "removeFromPlants": "내 식물들에서 제거"
+    "removeFromPlants": "내 식물들에서 제거",
+    "winterNote": "❄️ 겨울 모드: 물주기 간격 {{days}} (보통 {{normal}})",
+    "notYet": "아직이에요 — 흙이 아직 축축해요",
+    "snoozedNice_other": "⏰ 알겠어요 — {{count}}일 후에 알려 드릴게요",
+    "fertilizing": "🌱 비료",
+    "nextFeed": "다음 비료: ",
+    "restingUntilSpring": "겨울 휴면기 — 비료는 봄에 다시 시작해요.",
+    "iFertilized": "🌱 비료 줬어요",
+    "fertilizedNice": "✓ 비료 완료 — 잘했어요!",
+    "feedEvery": "비료 간격",
+    "fertilizeOff": "이 식물의 비료 알림이 꺼져 있어요.",
+    "fertilizeTurnOn": "비료 알림 켜기",
+    "fertilizeTurnOff": "비료 알림 끄기"
   },
   "result": {
     "addedOffTitle": "추가했어요 — 알림은 꺼져 있어요",
@@ -189,6 +201,20 @@
     "channel": "물주기 알림",
     "title": "💧 {{name}}에게 물 줄 시간이에요",
     "body_other": "마지막으로 {{count}}일 전에 물을 줬어요. 눌러서 완료 표시하세요.",
-    "bodyNoDays": "눌러서 완료 표시하세요."
+    "bodyNoDays": "눌러서 완료 표시하세요.",
+    "feedTitle": "🌱 {{name}}에게 비료 줄 시간이에요",
+    "feedBody": "성장기예요 — 비료를 주면 더 잘 자라요. 눌러서 완료 표시하세요."
+  },
+  "pets": {
+    "toxic": "반려동물에게 유독",
+    "mildly_toxic": "반려동물에게 약간 유독",
+    "safe": "반려동물에게 안전"
+  },
+  "share": {
+    "button": "공유",
+    "title": "이 식물 공유하기",
+    "action": "이미지 공유",
+    "identifiedWith": "Leafkin으로 식별",
+    "failed": "이미지를 공유하지 못했어요. 다시 시도해 주세요."
   }
 }

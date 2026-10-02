@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import type { GardenPlant, PlantAnalysis, ScanRecord } from "@/types/plant";
+import type { GardenPlant, PetSafety, PlantAnalysis, ScanRecord } from "@/types/plant";
 import { persistImages } from "./images";
 
 const db = SQLite.openDatabaseSync("plantapp.db");
@@ -22,6 +22,21 @@ db.execSync(`
     created_at TEXT NOT NULL
   );
 `);
+
+// Columns added after the first release. PRAGMA user_version records how many
+// of these have run, so each runs exactly once per install. Append, never edit.
+const MIGRATIONS = [
+  `ALTER TABLE plants ADD COLUMN snoozed_until TEXT;
+   ALTER TABLE plants ADD COLUMN pet_safety TEXT;
+   ALTER TABLE plants ADD COLUMN fertilize_interval_days INTEGER;
+   ALTER TABLE plants ADD COLUMN last_fertilized_at TEXT;`,
+];
+
+const { user_version: schemaVersion } = db.getFirstSync<{ user_version: number }>("PRAGMA user_version")!;
+MIGRATIONS.slice(schemaVersion).forEach((sql, i) => {
+  db.execSync(sql);
+  db.execSync(`PRAGMA user_version = ${schemaVersion + i + 1}`);
+});
 
 function newId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -90,6 +105,10 @@ interface PlantRow {
   image_uri: string;
   water_interval_days: number;
   last_watered_at: string;
+  snoozed_until: string | null;
+  pet_safety: PetSafety | null;
+  fertilize_interval_days: number | null;
+  last_fertilized_at: string | null;
   created_at: string;
 }
 
@@ -102,6 +121,10 @@ function rowToPlant(row: PlantRow): GardenPlant {
     imageUri: row.image_uri,
     waterIntervalDays: row.water_interval_days,
     lastWateredAt: row.last_watered_at,
+    snoozedUntil: row.snoozed_until,
+    petSafety: row.pet_safety,
+    fertilizeIntervalDays: row.fertilize_interval_days,
+    lastFertilizedAt: row.last_fertilized_at,
     createdAt: row.created_at,
   };
 }
@@ -109,8 +132,9 @@ function rowToPlant(row: PlantRow): GardenPlant {
 export async function addPlant(input: Omit<GardenPlant, "id" | "createdAt">): Promise<GardenPlant> {
   const plant: GardenPlant = { ...input, id: newId(), createdAt: new Date().toISOString() };
   await db.runAsync(
-    `INSERT INTO plants (id, scan_id, name, scientific_name, image_uri, water_interval_days, last_watered_at, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO plants (id, scan_id, name, scientific_name, image_uri, water_interval_days, last_watered_at,
+       snoozed_until, pet_safety, fertilize_interval_days, last_fertilized_at, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     plant.id,
     plant.scanId,
     plant.name,
@@ -118,6 +142,10 @@ export async function addPlant(input: Omit<GardenPlant, "id" | "createdAt">): Pr
     plant.imageUri,
     plant.waterIntervalDays,
     plant.lastWateredAt,
+    plant.snoozedUntil,
+    plant.petSafety,
+    plant.fertilizeIntervalDays,
+    plant.lastFertilizedAt,
     plant.createdAt
   );
   return plant;
@@ -138,18 +166,30 @@ export async function listPlants(): Promise<GardenPlant[]> {
   return rows.map(rowToPlant);
 }
 
+export type PlantChange =
+  | "name"
+  | "waterIntervalDays"
+  | "lastWateredAt"
+  | "snoozedUntil"
+  | "fertilizeIntervalDays"
+  | "lastFertilizedAt";
+
 export async function updatePlant(
   id: string,
-  changes: Partial<Pick<GardenPlant, "name" | "waterIntervalDays" | "lastWateredAt">>
+  changes: Partial<Pick<GardenPlant, PlantChange>>
 ): Promise<GardenPlant | null> {
   const current = await getPlant(id);
   if (!current) return null;
   const next = { ...current, ...changes };
   await db.runAsync(
-    "UPDATE plants SET name = ?, water_interval_days = ?, last_watered_at = ? WHERE id = ?",
+    `UPDATE plants SET name = ?, water_interval_days = ?, last_watered_at = ?, snoozed_until = ?,
+       fertilize_interval_days = ?, last_fertilized_at = ? WHERE id = ?`,
     next.name,
     next.waterIntervalDays,
     next.lastWateredAt,
+    next.snoozedUntil,
+    next.fertilizeIntervalDays,
+    next.lastFertilizedAt,
     id
   );
   return next;

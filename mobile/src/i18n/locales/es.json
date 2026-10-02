@@ -107,7 +107,20 @@
     "intervalTip": "¿La tierra sigue húmeda el día del recordatorio? Suma un día o dos. ¿Se seca rápido en verano? Resta uno.",
     "fullGuide": "📖 Guía de cuidados y salud completa",
     "newHealthScan": "📷 Nueva revisión de salud",
-    "removeFromPlants": "Quitar de Mis plantas"
+    "removeFromPlants": "Quitar de Mis plantas",
+    "winterNote": "❄️ Modo invierno: {{days}} entre riegos (normalmente {{normal}})",
+    "notYet": "Todavía no — la tierra sigue húmeda",
+    "snoozedNice_one": "⏰ Entendido — te avisaré en {{count}} día",
+    "snoozedNice_other": "⏰ Entendido — te avisaré en {{count}} días",
+    "fertilizing": "🌱 Abonado",
+    "nextFeed": "Próximo abonado: ",
+    "restingUntilSpring": "Descansa en invierno — el abonado vuelve en primavera.",
+    "iFertilized": "🌱 La aboné",
+    "fertilizedNice": "✓ Abonada — ¡bien hecho!",
+    "feedEvery": "Abonar cada",
+    "fertilizeOff": "Los recordatorios de abonado están desactivados para esta planta.",
+    "fertilizeTurnOn": "Activar recordatorios de abonado",
+    "fertilizeTurnOff": "Desactivar recordatorios de abonado"
   },
   "result": {
     "addedOffTitle": "Añadida — recordatorios desactivados",
@@ -199,6 +212,20 @@
     "title": "💧 Hora de regar tu {{name}}",
     "body_one": "Último riego hace {{count}} día. Toca para marcarlo como hecho.",
     "body_other": "Último riego hace {{count}} días. Toca para marcarlo como hecho.",
-    "bodyNoDays": "Toca para marcarlo como hecho."
+    "bodyNoDays": "Toca para marcarlo como hecho.",
+    "feedTitle": "🌱 Hora de abonar tu {{name}}",
+    "feedBody": "Es temporada de crecimiento — un poco de abono la mantiene fuerte. Toca para marcarlo como hecho."
+  },
+  "pets": {
+    "toxic": "Tóxica para mascotas",
+    "mildly_toxic": "Levemente tóxica para mascotas",
+    "safe": "Segura para mascotas"
+  },
+  "share": {
+    "button": "Compartir",
+    "title": "Compartir esta planta",
+    "action": "Compartir imagen",
+    "identifiedWith": "Identificada con Leafkin",
+    "failed": "No se pudo compartir la imagen. Inténtalo de nuevo."
   }
 }
